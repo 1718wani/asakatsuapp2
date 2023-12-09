@@ -1,13 +1,8 @@
-import { RoomCardsListPage } from "../features/Room/page-components/RoomCardsListPage";
-import { View } from "react-native";
 import { Link } from "expo-router";
+import { View } from "react-native";
 
-export default function Page() {
-  return (
-    <View>
-      <Link href="/about">About</Link>
-      <Link href="/user/bacon">View user</Link>
-      <RoomCardsListPage />
-    </View>
-  );
+import { RoomCardsListPage } from "../features/Room/page-components/RoomCardsListPage";
+
+export default function IndexPage() {
+  return <RoomCardsListPage />;
 }

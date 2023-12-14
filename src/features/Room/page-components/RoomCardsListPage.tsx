@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { MakeRoomButton } from "../components/MakeRoomButton";
 import { RoomCard } from "../components/RoomCard";
 
-export const RoomCardsListPage = () => {
+export const RoomCardsListPageComponent = () => {
   return (
     <View className="flex-1 pt-4">
       <View className="flex-1">

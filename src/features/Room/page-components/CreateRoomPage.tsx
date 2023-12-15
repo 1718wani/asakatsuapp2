@@ -40,11 +40,12 @@ export const CreateRoomPageComponent = () => {
     defaultValues: {
       roomName: "",
       roomDescription: "",
-      penaltyCountThreshold: 3,
       awakeTime: new Date(),
       selectedDaysOfWeek: [],
       selectedWeeklyOrMonthly: "weekly",
       selectedPassLimitNumber: 2,
+      penaltyDescription: "",
+      penaltyCountThreshold: 3,
       invitedMembers: ["", "", ""],
     },
   });

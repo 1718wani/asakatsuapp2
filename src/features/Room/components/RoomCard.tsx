@@ -12,7 +12,7 @@ export const RoomCard = () => {
         router.push(`${path.roomDetail}/0`);
       }}
     >
-      <View className="p-3 bg-gray-100 rounded-lg shadow-lg w-full max-w-xs mx-auto">
+      <View className="mt-2 p-3 bg-gray-100 rounded-lg shadow-lg w-full max-w-xs mx-auto">
         <View className="rounded-lg border border-slate-100 bg-white text-black  shadow-sm ">
           <View className="flex flex-col space-y-1.5 px-6 pt-6">
             <View className="flex flex-row justify-between items-center">

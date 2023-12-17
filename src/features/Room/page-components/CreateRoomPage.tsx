@@ -40,11 +40,12 @@ export const CreateRoomPageComponent = () => {
     defaultValues: {
       roomName: "",
       roomDescription: "",
-      penaltyCountThreshold: 3,
       awakeTime: new Date(),
       selectedDaysOfWeek: [],
       selectedWeeklyOrMonthly: "weekly",
       selectedPassLimitNumber: 2,
+      penaltyDescription: "",
+      penaltyCountThreshold: 3,
       invitedMembers: ["", "", ""],
     },
   });
@@ -55,7 +56,7 @@ export const CreateRoomPageComponent = () => {
   return (
     <>
       <FormProvider {...methods}>
-        <View className="absolute mt-36 container mx-auto ">
+        <View className="absolute mt-12 container mx-auto ">
           <CreateRoomFormStepperComponent formStepStatus={formStepStatus} />
         </View>
         <View className="flex flex-col justify-center h-3/4 mx-7">

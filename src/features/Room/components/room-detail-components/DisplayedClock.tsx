@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 import { useTime } from "react-timer-hook";
 
 export const DisplayedClock = () => {
-  const { seconds, minutes, hours } = useTime({ format: "12-hour" });
+  const { seconds, minutes, hours } = useTime();
   const formatNumber = (number: number) => {
     return number < 10 ? `0${number}` : number;
   };

@@ -10,8 +10,12 @@ import { UserPerformanceCard } from "../components/room-detail-components/UserPe
 export const RoomDetailPageComponent = () => {
   return (
     <>
+      <View className=" fixed w-10/12 mx-auto my-2  ">
+        <DisplayedClock />
+      </View>
+
       <ScrollView>
-        <View className="flex flex-col items-center gap-y-3 mt-1 mb-10">
+        <View className="flex flex-col items-center gap-y-3  mb-10">
           <View className="flex flex-row justify-start">
             <View className="basis-10/12">
               <Text className="text-lg font-bold">成績</Text>
@@ -22,15 +26,7 @@ export const RoomDetailPageComponent = () => {
               <UserPerformanceCard />
             </View>
           </View>
-          <View className="flex flex-row gap-x-2 ">
-            <View className=" basis-2/5 ">
-              <DisplayedClock />
-            </View>
 
-            <View className=" basis-2/5">
-              <RoomStatusOrStopButton />
-            </View>
-          </View>
           <View className="flex flex-row justify-start">
             <View className="basis-10/12">
               <Text className="text-lg font-bold">ルームの成績</Text>
@@ -71,6 +67,10 @@ export const RoomDetailPageComponent = () => {
           </View>
         </View>
       </ScrollView>
+
+      <View className="fixed bottom-0   mx-auto my-2 ">
+        <RoomStatusOrStopButton />
+      </View>
     </>
   );
 };

@@ -9,7 +9,7 @@ export const RoomCard = () => {
   return (
     <TouchableOpacity
       onPress={() => {
-        router.push(`${path.roomDetail}/0`);
+        router.push("/");
       }}
     >
       <View className="mt-2 p-3 bg-gray-100 rounded-lg shadow-lg w-full max-w-xs mx-auto">

@@ -21,9 +21,8 @@ export const UserPerformanceCard = () => {
 
           <Text className=" text-sm font-bold mb-1">残ペナルティ</Text>
           <View className="flex flex-row items-center space-x-1">
-            <Ionicons name="flag" size={14} color="black"  />
             <Ionicons name="flag" size={14} color="black" />
-            
+            <Ionicons name="flag" size={14} color="black" />
           </View>
           <Text className=" text-sm font-bold">あと4回パス可能</Text>
           <View className="flex flex-row items-center my-1 space-x-1">

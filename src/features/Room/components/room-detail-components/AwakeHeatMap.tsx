@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import CuteDragon from "../../../../../assets/CuteDragon.svg";
+import CuteDragon from "../../../../app/components/CuteDragon";
 
 type dateData = {
   date: string;
@@ -122,6 +122,7 @@ export const AwakeHeatMap = () => {
         </View>
         <View className="ml-14 ">
           <Text className=" flex items-center">成功率は80%</Text>
+          <CuteDragon />
         </View>
       </View>
     </View>

@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "expo-router";
-import { Image, Pressable } from "react-native";
+import { Pressable } from "react-native";
 import { path } from "../../../consts/path";
+import { Image } from "expo-image";
 
 export const UserAvatorButton = () => {
   return (

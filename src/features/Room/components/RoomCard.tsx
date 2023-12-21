@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image } from "expo-image";
 import { path } from "../../../consts/path";
 
 export const RoomCard = () => {

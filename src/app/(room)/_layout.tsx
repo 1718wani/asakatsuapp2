@@ -8,9 +8,6 @@ import { RoomStatusOrStopButton } from "../../features/Room/components/room-deta
 export default function RoomTabLayout() {
   return (
     <Tabs>
-      <View className="absolute">
-        <RoomStatusOrStopButton />
-      </View>
       <Tabs.Screen
         name="index"
         options={{

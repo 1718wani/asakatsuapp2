@@ -13,7 +13,7 @@ import { AwakeTimePickerForAndroid } from "../AwakeTimePickerForAndroid";
 import { AwakeTimePickerForIos } from "../AwakeTimePickerForIos";
 import { PassLImitPicker } from "../PassLimitPicker";
 import { Picker } from "@react-native-picker/picker";
-import { daysOfWeekArray } from "../../consts/daysOfWeekArray";
+import { dayOfWeekMapping } from "../../consts/daysOfWeekMapping";
 import { passLimitOptions } from "../../consts/passLimitOptionsArray";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -41,19 +41,19 @@ export const CreateRoomRuleDetailFormComponent = () => {
       </View>
       <View>
         <View className="flex flex-row justify-around mb-4">
-          {daysOfWeekArray.map((day) => (
+          {Object.entries(dayOfWeekMapping).map(([key, day]) => (
             <Controller
-              key={day}
+              key={key}
               name="selectedDaysOfWeek"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <DayButton
                   day={day}
-                  selected={value.includes(day)}
+                  selected={value.includes(parseInt(key))}
                   onSelect={() => {
-                    const newSelectedDays = value.includes(day)
-                      ? value.filter((d: string) => d !== day)
-                      : [...value, day];
+                    const newSelectedDays = value.includes(parseInt(key))
+                      ? value.filter((d: number) => d !== parseInt(key))
+                      : [...value, parseInt(key)];
                     onChange(newSelectedDays);
                   }}
                 />

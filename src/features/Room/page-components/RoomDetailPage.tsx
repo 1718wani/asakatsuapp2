@@ -8,6 +8,7 @@ import { RoomRuleDetailCard } from "../components/room-detail-components/RoomRul
 import { UserPerformanceCard } from "../components/room-detail-components/UserPerformanceCard";
 
 export const RoomDetailPageComponent = () => {
+  console.log("親コンポーネントが呼び出されました")
   return (
     <>
       <View className=" fixed w-10/12 mx-auto my-2  ">
@@ -67,10 +68,6 @@ export const RoomDetailPageComponent = () => {
           </View>
         </View>
       </ScrollView>
-
-      <View className="fixed bottom-0   mx-auto my-2 ">
-        <RoomStatusOrStopButton />
-      </View>
     </>
   );
 };

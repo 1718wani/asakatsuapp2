@@ -1,4 +1,4 @@
-import { Image, View, Text, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export const RoomRuleDetailCard = () => {

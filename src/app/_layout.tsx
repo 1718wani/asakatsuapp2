@@ -66,7 +66,6 @@ export default function HomeLayout() {
     );
 
     setAppIsReady(true);
-    console.log(appIsReady, "AppisReady");
     SplashScreen.hideAsync();
 
     // クリーンアップ関数

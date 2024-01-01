@@ -7,13 +7,17 @@ import { useAtomValue } from "jotai";
 import { defaultRoomAtom } from "../../../states/defaultRoomAtom";
 import { router } from "expo-router";
 import { path } from "../../../consts/path";
+import { getDefaultRoom } from "../apis/getDefaultRoom";
+import useSWR from "swr";
 
 export const RoomCardsListPageComponent = () => {
-  const defaultRoomId = useAtomValue(defaultRoomAtom);
   // defaultRoomidに合致するルームを取得する。
-  // 自分のIDをもとにRoommemberを取得して、RoommemberのRoomIDをもとにRoomを取得する。ただstatusがActiveは除く。
-  // 自分のIDをもとにInvitationを取得して、そのルームIDをもってRoomを取得する。
+  const { data: defaultRoom } = useSWR(["defaultRoom"], () => getDefaultRoom());
 
+  // 自分のIDをもとにRoommemberを取得して、RoommemberのRoomIDをもとにRoomを取得する。ただstatusがActiveは除く。
+  
+
+  // 自分のIDをもとにInvitationを取得して、そのルームIDをもってRoomを取得する。
 
   return (
     <View className="flex-1 pt-4">

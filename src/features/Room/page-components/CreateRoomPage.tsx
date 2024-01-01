@@ -22,23 +22,13 @@ import { dayOfWeekType } from "../types/dayOfWeekType";
 import { createRoom } from "../apis/createRoom";
 import { createRule } from "../apis/createRule";
 import Toast from "react-native-toast-message";
-
-type formProps = {
-  roomName: string;
-  roomDescription: string;
-  penaltyDescription: string;
-  penaltyCountThreshold: number;
-  awakeTime: Date;
-  selectedDaysOfWeek: dayOfWeekType[];
-  selectedWeeklyOrMonthly: "weekly" | "monthly";
-  selectedPassLimitNumber: number;
-  invitedMembers: string[];
-};
+import { roomCreateFormProps } from "../types/roomCreateFormProps";
+import { submitRoomCreate } from "../functions/submitRoomCreate";
 
 export const CreateRoomPageComponent = () => {
   const { formStepStatus, buttonIsSubmit, handleNext, handleBack } =
     useFormStep(formStepStatusOptionArray);
-  const methods = useForm<formProps>({
+  const methods = useForm<roomCreateFormProps>({
     defaultValues: {
       roomName: "",
       roomDescription: "",
@@ -51,33 +41,9 @@ export const CreateRoomPageComponent = () => {
       invitedMembers: ["", "", ""],
     },
   });
-  const onSubmit = async (data: formProps) => {
+  const onSubmit = async (data: roomCreateFormProps) => {
     console.log("フォームデータ:", data);
-
-    try {
-      // まずルールを作成
-      const ruleId = await createRule(
-        data.penaltyDescription,
-        data.penaltyCountThreshold,
-        data.awakeTime,
-        data.selectedDaysOfWeek,
-        data.selectedWeeklyOrMonthly,
-        data.selectedPassLimitNumber
-      );
-
-      createRoom(data.roomName, data.roomDescription, ruleId);
-      router.back();
-      Toast.show({
-        type: "success",
-        text1: "ルーム作成に成功しました",
-      });
-    } catch (error) {
-      console.error("エラー発生:", error);
-      Toast.show({
-        type: "error",
-        text1: "ルーム作成に失敗しました",
-      });
-    }
+    submitRoomCreate(data);
   };
 
   return (

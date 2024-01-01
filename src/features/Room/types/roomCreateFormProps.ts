@@ -1,6 +1,6 @@
 import { dayOfWeekType } from "./dayOfWeekType";
 
-export type roomFormProps = {
+export type roomCreateFormProps = {
   roomName: string;
   roomDescription: string;
   penaltyDescription: string;

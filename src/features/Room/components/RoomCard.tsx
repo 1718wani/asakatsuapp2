@@ -3,13 +3,28 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
 import { path } from "../../../consts/path";
 
+const datas = [
+  {
+    roomName: "朝活部屋", // rooms.roomName
+    roomStatus: "standby", // 停止中, 活動中
+    wakeUpTime: "06:30", // 参加待ちか停止中なら起きる時刻：HH:mm,  活動中なら日にちも含めて、次起きる時刻とする。
+    penaltyInfo: 5, // 参加待ちなら‐回失敗でペナルティと表示をする。 停止中、活動中なら残り‐機
+    member: [
+      "https://i.pravatar.cc/300",
+      "https://i.pravatar.cc/300",
+      "https://i.pravatar.cc/300",
+      "https://i.pravatar.cc/300",
+    ],
+  },
+];
+
 export const RoomCard = () => {
   const router = useRouter();
 
   return (
     <TouchableOpacity
       onPress={() => {
-        router.push("/");
+        router.push(path.dashboard);
       }}
     >
       <View className="mt-2 p-3 bg-gray-100 rounded-lg shadow-lg w-full max-w-xs mx-auto">

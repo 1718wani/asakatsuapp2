@@ -18,16 +18,12 @@ import { CreateRoomInviteMemberFormComponent } from "../components/create-room-f
 import { formStepStatusOptionArray } from "../consts/formStepStatusOptionArray";
 import { useFormStep } from "../hooks/useFormStep";
 import { useForm, FormProvider } from "react-hook-form";
-import { dayOfWeekType } from "../types/dayOfWeekType";
-import { daysOfWeekArray } from "../consts/daysOfWeekArray";
-import { formProps } from "../types/formProps";
-
-
+import { roomFormProps } from "../types/formProps";
 
 export const FirstApproveRoomRulePageComponent = () => {
   const { formStepStatus, buttonIsSubmit, handleNext, handleBack } =
     useFormStep(formStepStatusOptionArray);
-  const methods = useForm<formProps>({
+  const methods = useForm<roomFormProps>({
     defaultValues: {
       roomName: "",
       roomDescription: "",
@@ -40,7 +36,7 @@ export const FirstApproveRoomRulePageComponent = () => {
       invitedMembers: ["", "", ""],
     },
   });
-  const onSubmit = (data: formProps) => {
+  const onSubmit = (data: roomFormProps) => {
     console.log("フォームデータ:", data);
   };
 

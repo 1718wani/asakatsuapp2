@@ -1,1 +1,1 @@
-export type dayOfWeekType = "月" | "火" | "水" | "木" | "金" | "土" | "日";
+export type dayOfWeekType = 0 | 1 | 2 | 3 | 4 | 5 | 6;

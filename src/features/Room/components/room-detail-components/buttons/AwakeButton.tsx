@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { TouchableOpacity, Text, View } from "react-native";
-import Toast from "react-native-root-toast";
+import Toast from "react-native-toast-message";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, {
@@ -11,8 +11,6 @@ import Animated, {
 } from "react-native-reanimated";
 
 export const AwakeButton = () => {
-  const [toastVisible, setToastVisible] = useState(false);
-
   const rotation = useSharedValue(0);
 
   // アニメーションスタイルを定義
@@ -36,11 +34,10 @@ export const AwakeButton = () => {
   }, []);
 
   const handlePress = () => {
-    setToastVisible(true);
-
-    setTimeout(() => {
-      setToastVisible(false);
-    }, 3000);
+    Toast.show({
+      type: "success",
+      text1: `起床を記録しました`,
+    });
   };
   return (
     <>
@@ -52,15 +49,6 @@ export const AwakeButton = () => {
           <Ionicons name="alarm-outline" size={24} color="white" />
         </Animated.View>
         <Text className=" text-white text-xs font-bold">おきたよ</Text>
-        <Toast
-          visible={toastVisible}
-          position={Toast.positions.TOP}
-          shadow={true}
-          animation={true}
-          hideOnPress={true}
-        >
-          起床が記録されました！
-        </Toast>
       </TouchableOpacity>
     </>
   );

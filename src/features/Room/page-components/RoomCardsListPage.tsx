@@ -2,8 +2,19 @@ import { ScrollView, View } from "react-native";
 
 import { MakeRoomButton } from "../components/MakeRoomButton";
 import { RoomCard } from "../components/RoomCard";
+import Toast from "react-native-toast-message";
+import { useAtomValue } from "jotai";
+import { defaultRoomAtom } from "../../../states/defaultRoomAtom";
+import { router } from "expo-router";
+import { path } from "../../../consts/path";
 
 export const RoomCardsListPageComponent = () => {
+  const defaultRoomId = useAtomValue(defaultRoomAtom);
+  // defaultRoomidに合致するルームを取得する。
+  // 自分のIDをもとにRoommemberを取得して、RoommemberのRoomIDをもとにRoomを取得する。ただstatusがActiveは除く。
+  // 自分のIDをもとにInvitationを取得して、そのルームIDをもってRoomを取得する。
+
+
   return (
     <View className="flex-1 pt-4">
       <ScrollView>
@@ -19,6 +30,7 @@ export const RoomCardsListPageComponent = () => {
           <MakeRoomButton />
         </View>
       </View>
+      <Toast position="bottom" />
     </View>
   );
 };

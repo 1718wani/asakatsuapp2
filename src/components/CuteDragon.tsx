@@ -1,5 +1,5 @@
 import * as React from "react";
-import Svg, { Circle, Rect, Path, G, Ellipse } from "react-native-svg";
+import Svg, { Rect, Path, G, Ellipse } from "react-native-svg";
 
 export default function CuteDragon() {
   return (

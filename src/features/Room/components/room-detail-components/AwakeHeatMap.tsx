@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import CuteDragon from "../../../../app/components/CuteDragon";
+import CuteDragon from "../../../../components/CuteDragon";
 
 type dateData = {
   date: string;

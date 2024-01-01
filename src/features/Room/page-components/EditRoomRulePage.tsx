@@ -19,7 +19,7 @@ import { formStepStatusOptionArray } from "../consts/formStepStatusOptionArray";
 import { useFormStep } from "../hooks/useFormStep";
 import { useForm, FormProvider } from "react-hook-form";
 import { dayOfWeekType } from "../types/dayOfWeekType";
-import { daysOfWeekArray } from "../consts/daysOfWeekArray";
+import { daysOfWeekArray } from "../consts/daysOfWeekMapping";
 import { formProps } from "../types/formProps";
 
 export const EditRoomRulePageComponent = () => {

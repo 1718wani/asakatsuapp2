@@ -2,24 +2,31 @@ import { useRouter } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
 import { path } from "../../../consts/path";
+import { DisplayedCardProps } from "../types/DisplayedCardProps";
 
-const datas = [
-  {
-    roomName: "朝活部屋", // rooms.roomName
-    roomStatus: "standby", // 停止中, 活動中
-    wakeUpTime: "06:30", // 参加待ちか停止中なら起きる時刻：HH:mm,  活動中なら日にちも含めて、次起きる時刻とする。
-    penaltyInfo: 5, // 参加待ちなら‐回失敗でペナルティと表示をする。 停止中、活動中なら残り‐機
-    member: [
-      "https://i.pravatar.cc/300",
-      "https://i.pravatar.cc/300",
-      "https://i.pravatar.cc/300",
-      "https://i.pravatar.cc/300",
-    ],
-  },
-];
 
-export const RoomCard = () => {
+export const RoomCard = (props: DisplayedCardProps) => {
   const router = useRouter();
+
+  const renderPenaltyBars = (
+    penaltyThreshold: number,
+    failureCount: number | undefined
+  ) => {
+    const penaltyBars = [];
+    for (let i = 0; i < penaltyThreshold; i++) {
+      // failureCountがundefinedの場合は、すべてのバーをbg-red-100で表示
+      const bgColor =
+        failureCount === undefined
+          ? "bg-red-100"
+          : i < failureCount
+            ? "bg-red-600"
+            : "bg-red-100";
+      penaltyBars.push(
+        <View key={i} className={`w-7 h-4 ${bgColor} rounded-xl`} />
+      );
+    }
+    return penaltyBars;
+  };
 
   return (
     <TouchableOpacity
@@ -32,23 +39,26 @@ export const RoomCard = () => {
           <View className="flex flex-col space-y-1.5 px-6 pt-6">
             <View className="flex flex-row justify-between items-center">
               <Text className="font-semibold tracking-tight text-gray-700 text-lg">
-                朝活部屋
+                {props.roomName}
               </Text>
               <View className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold  border-transparent  bg-emerald-500 shadow-sm">
-                <Text className=" text-white">7週継続中</Text>
+                <Text className=" text-white">{props.roomStatus}</Text>
               </View>
             </View>
-            <Text className="text-gray-500 text-sm">
-              次起きる時間: 12/10 6:00 AM
-            </Text>
+            <Text className="text-gray-500 text-sm">{props.wakeUpTime}</Text>
             <View className="flex flex-row space-x-2 items-center">
-              <Text className="text-gray-500 text-sm pr-2">残り3機:</Text>
-              <View className="flex flex-row items-center justify-between  space-x-1">
-                <View className=" w-7 h-4 bg-red-600 rounded-xl" />
-                <View className=" w-7 h-4 bg-red-600 rounded-xl " />
-                <View className=" w-7 h-4 bg-red-100 rounded-xl " />
-                <View className=" w-7 h-4 bg-red-100 rounded-xl" />
-                <View className=" w-7 h-4 bg-red-100 rounded-xl" />
+              {props.failureCount ? (
+                <Text className="text-gray-500 text-sm pr-2">
+                  残り{props.failureCount}機:
+                </Text>
+              ) : (
+                <Text className="text-gray-500 text-sm pr-2">
+                  {props.penaltyThreshold}回でペナルティ
+                </Text>
+              )}
+
+              <View className="flex flex-row items-center justify-between space-x-1">
+                {renderPenaltyBars(props.penaltyThreshold, props.failureCount)}
               </View>
             </View>
           </View>
@@ -56,24 +66,14 @@ export const RoomCard = () => {
             <View className="mb-2">
               <Text className="text-gray-700 text-base mb-1">メンバー:</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View className="pr-2">
-                  <Image
-                    source={{ uri: "https://i.pravatar.cc/300" }}
-                    className="rounded-full w-12 h-12"
-                  />
-                </View>
-                <View className="pr-2">
-                  <Image
-                    source={{ uri: "https://i.pravatar.cc/300" }}
-                    className="rounded-full w-12 h-12"
-                  />
-                </View>
-                <View className="pr-2">
-                  <Image
-                    source={{ uri: "https://i.pravatar.cc/300" }}
-                    className="rounded-full w-12 h-12"
-                  />
-                </View>
+                {props.avatarUrls.map((url, index) => (
+                  <View key={index} className="pr-2">
+                    <Image
+                      source={{ uri: url }}
+                      className="rounded-full w-12 h-12"
+                    />
+                  </View>
+                ))}
               </ScrollView>
             </View>
           </View>

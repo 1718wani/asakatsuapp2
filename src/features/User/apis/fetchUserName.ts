@@ -4,11 +4,17 @@ export const fetchUserName = async (userId: string) => {
   const { data, error } = await supabase
     .from("profiles")
     .select("user_name")
-    .eq("id", userId);
+    .eq("id", userId)
+    .single();
 
   if (error) {
-    throw new Error("fetchUserNameのエラー")
+    console.error(error, "UserNameのフェッチに失敗しました");
+    throw error;
   }
 
-  return data.length > 0 ? data[0].user_name : null;
+  if (!data) {
+    console.log("userIdに合致するdataが見つかりませんでした。");
+  }
+
+  return data;
 };

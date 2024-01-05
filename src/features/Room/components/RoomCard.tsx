@@ -1,13 +1,12 @@
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
 import { path } from "../../../consts/path";
 import { DisplayedCardProps } from "../types/DisplayedCardProps";
-
+import { DisplayUserInfoProps } from "../types/DisplayUserInfoProps";
+import { getUserId } from "../../User/apis/getUserId";
 
 export const RoomCard = (props: DisplayedCardProps) => {
-  const router = useRouter();
-
   const renderPenaltyBars = (
     penaltyThreshold: number,
     failureCount: number | undefined
@@ -47,9 +46,9 @@ export const RoomCard = (props: DisplayedCardProps) => {
             </View>
             <Text className="text-gray-500 text-sm">{props.wakeUpTime}</Text>
             <View className="flex flex-row space-x-2 items-center">
-              {props.failureCount ? (
+              {props.participants[0].failure_count ? (
                 <Text className="text-gray-500 text-sm pr-2">
-                  残り{props.failureCount}機:
+                  残り{props.participants[0].failure_count}機:
                 </Text>
               ) : (
                 <Text className="text-gray-500 text-sm pr-2">
@@ -58,7 +57,10 @@ export const RoomCard = (props: DisplayedCardProps) => {
               )}
 
               <View className="flex flex-row items-center justify-between space-x-1">
-                {renderPenaltyBars(props.penaltyThreshold, props.failureCount)}
+                {renderPenaltyBars(
+                  props.penaltyThreshold,
+                  props.participants[0].failure_count
+                )}
               </View>
             </View>
           </View>
@@ -66,10 +68,10 @@ export const RoomCard = (props: DisplayedCardProps) => {
             <View className="mb-2">
               <Text className="text-gray-700 text-base mb-1">メンバー:</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {props.avatarUrls.map((url, index) => (
-                  <View key={index} className="pr-2">
+                {props.participants.map((participant, index) => (
+                  <View key={participant.profiles?.id} className="pr-2">
                     <Image
-                      source={{ uri: url }}
+                      source={{ uri: participant.profiles?.avatar_url }}
                       className="rounded-full w-12 h-12"
                     />
                   </View>

@@ -4,7 +4,7 @@ import { getUserId } from "../../User/apis/getUserId";
 export const getAllMyInvitationsForRoomsListDisplay = async () => {
   const userId = await getUserId();
   const { data, error } = await supabase
-    .from("invitation")
+    .from("invitations")
     .select(
       `
     id,
@@ -18,7 +18,9 @@ export const getAllMyInvitationsForRoomsListDisplay = async () => {
         wakeup_time
       ),
       room_members (
+        failure_count,
         profiles (
+          id,
           user_name,
           avatar_url
         )

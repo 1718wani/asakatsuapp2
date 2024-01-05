@@ -48,7 +48,7 @@ export interface Database {
           }
         ]
       }
-      invitation: {
+      invitations: {
         Row: {
           approved: boolean
           created_at: string
@@ -75,21 +75,21 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "invitation_created_by_fkey"
+            foreignKeyName: "invitations_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "invitation_room_id_fkey"
+            foreignKeyName: "invitations_room_id_fkey"
             columns: ["room_id"]
             isOneToOne: false
             referencedRelation: "rooms"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "invitation_user_id_fkey"
+            foreignKeyName: "invitations_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -99,28 +99,28 @@ export interface Database {
       }
       profiles: {
         Row: {
-          avatar_url: string | null
+          avatar_url: string
           default_room: number | null
           id: string
           updated_at: string | null
           user_code: string
-          user_name: string | null
+          user_name: string
         }
         Insert: {
-          avatar_url?: string | null
+          avatar_url?: string
           default_room?: number | null
           id: string
           updated_at?: string | null
           user_code?: string
-          user_name?: string | null
+          user_name?: string
         }
         Update: {
-          avatar_url?: string | null
+          avatar_url?: string
           default_room?: number | null
           id?: string
           updated_at?: string | null
           user_code?: string
-          user_name?: string | null
+          user_name?: string
         }
         Relationships: [
           {
@@ -143,25 +143,28 @@ export interface Database {
         Row: {
           failure_count: number
           penalty_count: number
-          remaining_skips: number
           room_id: number
+          skip_count: number
           total_failure_count: number
+          total_success_count: number
           user_id: string
         }
         Insert: {
           failure_count?: number
           penalty_count?: number
-          remaining_skips?: number
           room_id: number
+          skip_count?: number
           total_failure_count?: number
+          total_success_count?: number
           user_id: string
         }
         Update: {
           failure_count?: number
           penalty_count?: number
-          remaining_skips?: number
           room_id?: number
+          skip_count?: number
           total_failure_count?: number
+          total_success_count?: number
           user_id?: string
         }
         Relationships: [
@@ -189,7 +192,7 @@ export interface Database {
           name: string
           purpose: string
           rule: number
-          status: Database["public"]["Enums"]["room_status"] | null
+          status: Database["public"]["Enums"]["room_status"]
         }
         Insert: {
           created_at?: string
@@ -198,7 +201,7 @@ export interface Database {
           name: string
           purpose?: string
           rule: number
-          status?: Database["public"]["Enums"]["room_status"] | null
+          status?: Database["public"]["Enums"]["room_status"]
         }
         Update: {
           created_at?: string
@@ -207,7 +210,7 @@ export interface Database {
           name?: string
           purpose?: string
           rule?: number
-          status?: Database["public"]["Enums"]["room_status"] | null
+          status?: Database["public"]["Enums"]["room_status"]
         }
         Relationships: [
           {
@@ -321,10 +324,13 @@ export interface Database {
       user_activity_type_enum:
         | "invite_make"
         | "invite_accept"
-        | "penalty_alert"
+        | "penalty_approve"
         | "rule_approve"
         | "rule_propose"
         | "penalty_complete"
+        | "wake_up_success"
+        | "wake_up_failure"
+        | "skip_use"
     }
     CompositeTypes: {
       [_ in never]: never

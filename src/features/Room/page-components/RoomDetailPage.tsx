@@ -6,9 +6,23 @@ import { DisplayedSuccessNumber } from "../components/room-detail-components/Dis
 import { ParticipantPerformanceCard } from "../components/room-detail-components/ParticipantPerformanceCard";
 import { RoomRuleDetailCard } from "../components/room-detail-components/RoomRuleDetailCard";
 import { UserPerformanceCard } from "../components/room-detail-components/UserPerformanceCard";
+import useSWR from "swr";
+import { getDefaultRoomForRoomsListDisplay } from "../apis/getDefaultRoomForRoomsListDisplay";
+import { useAtomValue } from "jotai";
+import { defaultRoomIdAtom } from "../../../states/defaultRoomAtom";
 
 export const RoomDetailPageComponent = () => {
-  console.log("親コンポーネントが呼び出されました")
+  const defaultRoomId = useAtomValue(defaultRoomIdAtom);
+  const {
+    data: defaultRoom,
+    isLoading: defaultRoomIsLoading,
+    error: defaultRoomError,
+  } = useSWR(["defaultRoom"], () =>
+    getDefaultRoomForRoomsListDisplay(
+      // defaultRoomがない場合、負の数を返してNullを返す
+      defaultRoomId
+    )
+  );
   return (
     <>
       <View className=" fixed w-10/12 mx-auto my-2  ">
@@ -24,7 +38,19 @@ export const RoomDetailPageComponent = () => {
           </View>
           <View className="flex flex-row">
             <View className=" basis-10/12">
-              <UserPerformanceCard />
+              <UserPerformanceCard
+                totalSuccessCount={
+                  defaultRoom?.room_members[0].total_success_count ?? 0
+                }
+                totalFailureCount={
+                  defaultRoom?.room_members[0].total_failure_count ?? 0
+                }
+                penaltyCount={defaultRoom?.room_members[0].penalty_count ?? 0}
+                failureCount={defaultRoom?.room_members[0].failure_count ?? 0}
+                skipCount={defaultRoom?.room_members[0].skip_count ?? 0}
+                penaltyThreshold={defaultRoom?.rules?.penalty_threshold ?? 0}
+                skipLimit={defaultRoom?.rules?.skip_limit ?? 0}
+              />
             </View>
           </View>
 
@@ -58,7 +84,7 @@ export const RoomDetailPageComponent = () => {
           </View>
           <View className="flex flex-row justify-start">
             <View className="basis-10/12">
-              <Text className="text-lg font-bold">タスク一覧</Text>
+              <Text className="text-lg font-bold">ルームとルールの詳細</Text>
             </View>
           </View>
           <View className="flex flex-row">

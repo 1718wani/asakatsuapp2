@@ -18,15 +18,15 @@ import { RoomStatusOrStopButton } from "../features/Room/components/room-detail-
 import { supabase } from "../libs/supabase";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { fetchUserName } from "../features/User/apis/fetchUserName";
-import { getDefaultRoom } from "../features/Room/apis/getDefaultRoom";
 import { useSetAtom } from "jotai";
-import { defaultRoomAtom } from "../states/defaultRoomAtom";
 import Toast from "react-native-toast-message";
 import { Session } from "@supabase/supabase-js";
+import { getDefaultRoomId } from "../features/Room/apis/getDefaultRoomId";
+import { defaultRoomIdAtom } from "../states/defaultRoomAtom";
 
 SplashScreen.preventAutoHideAsync();
 export default function HomeLayout() {
-  const setDefaultRoom = useSetAtom(defaultRoomAtom);
+  const setDefaultRoom = useSetAtom(defaultRoomIdAtom);
   const [appIsReady, setAppIsReady] = useState(false);
   const [initialPageRouting, setInitialPageRouting] = useState(path.dashboard);
 
@@ -35,8 +35,8 @@ export default function HomeLayout() {
     const checkSessionAndNavigate = (session: Session | null) => {
       if (session) {
         fetchUserName(session.user.id).then((userName) => {
-          if (userName) {
-            getDefaultRoom().then((defaultRoom) => {
+          if (userName.user_name.length > 0) {
+            getDefaultRoomId().then((defaultRoom) => {
               if (defaultRoom) {
                 setDefaultRoom(defaultRoom);
                 setInitialPageRouting(path.dashboard);

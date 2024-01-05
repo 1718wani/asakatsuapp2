@@ -1,28 +1,29 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import { MakeRoomButton } from "../components/MakeRoomButton";
 import { RoomCard } from "../components/RoomCard";
 import Toast from "react-native-toast-message";
 import { useAtomValue } from "jotai";
-import { defaultRoomAtom } from "../../../states/defaultRoomAtom";
+import { defaultRoomIdAtom } from "../../../states/defaultRoomAtom";
 import { router } from "expo-router";
 import { path } from "../../../consts/path";
+import useSWR from "swr";
+import { getAllMyInvitationsForRoomsListDisplay } from "../apis/getAllMyInvitationsForRoomsListDisplay";
+import { getDefaultRoomForRoomsListDisplay } from "../apis/getDefaultRoomForRoomsListDisplay";
+import { DefaultCardComponent } from "../components/cardsComponent/DefaultCardComponent";
+import { InvitationCardsComponent } from "../components/cardsComponent/InvitationCardsComponent";
+import { AllCardsExceptComponent } from "../components/cardsComponent/AllCardsExceptComponent";
 
 export const RoomCardsListPageComponent = () => {
-  const defaultRoomId = useAtomValue(defaultRoomAtom);
-  // defaultRoomidに合致するルームを取得する。
-  // 自分のIDをもとにRoommemberを取得して、RoommemberのRoomIDをもとにRoomを取得する。ただstatusがActiveは除く。
-  // 自分のIDをもとにInvitationを取得して、そのルームIDをもってRoomを取得する。
-
+  const defaultRoomId = useAtomValue(defaultRoomIdAtom);
 
   return (
     <View className="flex-1 pt-4">
       <ScrollView>
         <View className="flex-1">
-          <RoomCard />
-          <RoomCard />
-          <RoomCard />
-          <RoomCard />
+          <DefaultCardComponent defaultRoomId={defaultRoomId} />
+          <AllCardsExceptComponent defaultRoomId={defaultRoomId} />
+          <InvitationCardsComponent />
         </View>
       </ScrollView>
       <View className="absolute bottom-10 w-full items-center">

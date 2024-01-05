@@ -1,6 +1,6 @@
 import { Session } from "@supabase/supabase-js";
 import { fetchUserName } from "../../User/apis/fetchUserName";
-import { getDefaultRoom } from "../../Room/apis/getDefaultRoom";
+import { getDefaultRoom } from "../../Room/apis/getDefaultRoomId";
 import { useAtom, useSetAtom } from "jotai";
 import { defaultRoomAtom } from "../../../states/defaultRoomAtom";
 import { path } from "../../../consts/path";

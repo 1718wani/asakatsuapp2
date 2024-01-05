@@ -18,12 +18,12 @@ import { CreateRoomInviteMemberFormComponent } from "../components/create-room-f
 import { formStepStatusOptionArray } from "../consts/formStepStatusOptionArray";
 import { useFormStep } from "../hooks/useFormStep";
 import { useForm, FormProvider } from "react-hook-form";
-import { roomFormProps } from "../types/formProps";
+import { roomCreateFormProps } from "../types/roomCreateFormProps";
 
 export const FirstApproveRoomRulePageComponent = () => {
   const { formStepStatus, buttonIsSubmit, handleNext, handleBack } =
     useFormStep(formStepStatusOptionArray);
-  const methods = useForm<roomFormProps>({
+  const methods = useForm<roomCreateFormProps>({
     defaultValues: {
       roomName: "",
       roomDescription: "",
@@ -36,7 +36,7 @@ export const FirstApproveRoomRulePageComponent = () => {
       invitedMembers: ["", "", ""],
     },
   });
-  const onSubmit = (data: roomFormProps) => {
+  const onSubmit = (data: roomCreateFormProps) => {
     console.log("フォームデータ:", data);
   };
 

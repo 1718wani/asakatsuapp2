@@ -25,5 +25,5 @@ export const createRoom = async (
     throw error;
   }
 
-  console.log(data, "作成されたルームデータ");
+  return data;
 };

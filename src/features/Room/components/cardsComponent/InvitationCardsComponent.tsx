@@ -13,6 +13,8 @@ export const InvitationCardsComponent = () => {
     getAllMyInvitationsForRoomsListDisplay()
   );
 
+  console.log(allMyInvitations, "フェッチされたInvitationデータです。");
+
   return (
     <>
       {allMyInvitationsIsLoading && (
@@ -37,6 +39,7 @@ export const InvitationCardsComponent = () => {
           return (
             <RoomCard
               key={room_id}
+              roomId={room_id}
               roomName={rooms?.name}
               roomStatus={approved ? "active" : "招待中"}
               wakeUpTime={rooms?.rules?.wakeup_time}

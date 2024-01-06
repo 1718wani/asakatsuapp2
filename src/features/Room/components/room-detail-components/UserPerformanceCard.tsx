@@ -10,8 +10,10 @@ export const UserPerformanceCard = (props: UserPerformanceProps) => {
         <View className=" basis-1/2 items-center justify-center mr-2">
           <Text className="text-2xl font-bold">
             成功率
-            {props.totalSuccessCount /
-              (props.totalFailureCount + props.totalSuccessCount)}
+            {props.totalSuccessCount > 0
+              ? props.totalSuccessCount /
+                (props.totalFailureCount + props.totalSuccessCount)
+              : 0}
             %
           </Text>
         </View>
@@ -35,7 +37,7 @@ export const UserPerformanceCard = (props: UserPerformanceProps) => {
           </Text>
           <View className="flex flex-row items-center space-x-1">
             {Array.from({ length: props.penaltyCount }, (_, index) => (
-              <Ionicons key={index} name="flag" size={14} color="black" />
+              <Ionicons key={index} name="flag" size={14} color="black"  />
             ))}
           </View>
           <Text className=" text-sm font-bold">

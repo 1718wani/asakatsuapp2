@@ -17,7 +17,7 @@ export const DisplayedClock = () => {
 
     const futureDate = parseISO("2023-12-23T07:23:00"); // この時刻はDBから取得する必要あり
     const difference = differenceInMilliseconds(futureDate, now);
-    console.log(difference,`${difference/1000}秒後にsetIsDuringAwakeTimeがONになる`)
+    // console.log(difference,`${difference/1000}秒後にsetIsDuringAwakeTimeがONになる`)
 
     let timer: number | undefined;
 

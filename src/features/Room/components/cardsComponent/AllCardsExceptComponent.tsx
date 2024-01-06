@@ -38,6 +38,7 @@ export const AllCardsExceptComponent = (props: CardComponentProps) => {
           return (
             <RoomCard
               key={room_id}
+              roomId={room_id}
               roomName={rooms?.name}
               roomStatus={rooms?.status}
               wakeUpTime={rooms?.rules?.wakeup_time}

@@ -1,7 +1,12 @@
 import { View, Text, Pressable } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-export const RoomRuleDetailCard = () => {
+type detailProps = {
+  purpose: string;
+  penaltyDetail: string;
+};
+
+export const RoomRuleDetailCard = (props: detailProps) => {
   return (
     <View className=" bg-white rounded-md shadow-sm p-3">
       <View className=" flex flex-row items-center justify-between">
@@ -19,11 +24,9 @@ export const RoomRuleDetailCard = () => {
         </Pressable>
       </View>
 
-      <Text className=" text-sm font-medium">朝活を継続する。</Text>
+      <Text className=" text-sm font-medium">{props.purpose}</Text>
       <Text className=" text-xl  font-bold mt-1">ペナルティの内容</Text>
-      <Text className=" text-sm font-medium">
-        5回遅刻したらPaypayにそれぞれ250円入金する。二人遅刻したらその分負担額も増える
-      </Text>
+      <Text className=" text-sm font-medium">{props.penaltyDetail}</Text>
     </View>
   );
 };

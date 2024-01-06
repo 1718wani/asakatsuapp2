@@ -10,10 +10,12 @@ export const getDefaultRoomForRoomsListDisplay = async (
     .from("rooms")
     .select(
       `
+  id,
   name,    
   purpose,
   status, 
   rules (
+    penalty_detail,
     penalty_threshold,
     skip_limit,
     wakeup_time

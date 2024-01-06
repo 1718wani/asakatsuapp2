@@ -9,7 +9,6 @@ import {
 import { Database } from "../../../../types/supabaseSchema";
 import { dateData } from "../../types/dateAndAwakeCountPairArray";
 
-
 type activityDataProps = {
   room_id: number;
   timestamp: string;
@@ -36,7 +35,7 @@ const countAwakeSuccess = (
   data: activityDataProps[] | null | undefined
 ): dateData[] => {
   const countMap = new Map();
-  if (data === null || data === undefined) return [];
+  if (!Array.isArray(data)) return [];
 
   data.forEach((item) => {
     if (item.user_activity_type === "wake_up_success") {

@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 import { updateProfile } from "../apis/updateProfile";
 import { router } from "expo-router";
 import { useAtomValue } from "jotai";
-import { defaultRoomAtom } from "../../../states/defaultRoomAtom";
 import { userFormProps } from "../types/userFormProps";
+import { defaultRoomIdAtom } from "../../../states/defaultRoomAtom";
 
 
 
@@ -14,12 +14,11 @@ export const useProfileForm = (image: string) => {
     formState: { errors },
   } = useForm<userFormProps>();
 
-  const defaultRoom = useAtomValue(defaultRoomAtom);
+  const defaultRoom = useAtomValue(defaultRoomIdAtom);
 
   const onSubmit = async (data: userFormProps) => {
     try {
       await updateProfile(data.userName, image);
-      console.log("プロファイルが更新されました");
 
       // デフォルトルームの存在に基づくルーティング
       if (defaultRoom) {

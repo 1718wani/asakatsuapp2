@@ -4,6 +4,9 @@ import { Skeleton } from "@rneui/themed";
 import Toast from "react-native-toast-message";
 import { RoomCard } from "../RoomCard";
 import { CardComponentProps } from "../../types/CardComponentProps";
+import { useAtomValue } from "jotai";
+import { defaultRoomIdAtom } from "../../../../states/defaultRoomAtom";
+import { TouchableOpacity } from "react-native";
 
 export const DefaultCardComponent = (props: CardComponentProps) => {
   const {
@@ -17,6 +20,10 @@ export const DefaultCardComponent = (props: CardComponentProps) => {
     )
   );
 
+  console.log(props.defaultRoomId, "defaultRoomをカードのときにフェッチするID");
+
+  console.log(defaultRoom, "フェッチされたDefaultRoomのデータ");
+
   return (
     <>
       {defaultRoomIsLoading && (
@@ -27,8 +34,9 @@ export const DefaultCardComponent = (props: CardComponentProps) => {
           type: "error",
           text1: "デフォルトルームが取得できませんでした",
         })}
-      {defaultRoom && (
+      {defaultRoom &&  (
         <RoomCard
+          roomId={defaultRoom.id}
           roomName={defaultRoom.name}
           roomStatus="デフォルト"
           wakeUpTime={defaultRoom.rules?.wakeup_time}

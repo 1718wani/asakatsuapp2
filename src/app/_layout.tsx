@@ -18,27 +18,30 @@ import { RoomStatusOrStopButton } from "../features/Room/components/room-detail-
 import { supabase } from "../libs/supabase";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { fetchUserName } from "../features/User/apis/fetchUserName";
-import { useSetAtom } from "jotai";
 import Toast from "react-native-toast-message";
 import { Session } from "@supabase/supabase-js";
 import { getDefaultRoomId } from "../features/Room/apis/getDefaultRoomId";
-import { defaultRoomIdAtom } from "../states/defaultRoomAtom";
+import useSWR from "swr";
+import { getDefaultRoomName } from "../features/Room/apis/getDefaultRoomName";
 
 SplashScreen.preventAutoHideAsync();
 export default function HomeLayout() {
-  const setDefaultRoom = useSetAtom(defaultRoomIdAtom);
   const [appIsReady, setAppIsReady] = useState(false);
   const [initialPageRouting, setInitialPageRouting] = useState(path.dashboard);
+
+  const { data: defaultRoomName } = useSWR(["defaultRoomName"], () =>
+    getDefaultRoomName()
+  );
 
   useEffect(() => {
     // セッション状態をチェックし、適切な画面に遷移する関数
     const checkSessionAndNavigate = (session: Session | null) => {
       if (session) {
         fetchUserName(session.user.id).then((userName) => {
+          // ユーザーネームのデフォルト値は""
           if (userName.user_name.length > 0) {
             getDefaultRoomId().then((defaultRoom) => {
               if (defaultRoom) {
-                setDefaultRoom(defaultRoom);
                 setInitialPageRouting(path.dashboard);
               } else {
                 setInitialPageRouting(path.roomList);
@@ -91,7 +94,7 @@ export default function HomeLayout() {
           <Stack.Screen
             name="(room)"
             options={{
-              title: "デフォルトルームの名前",
+              title: defaultRoomName ? defaultRoomName.name : "タイトル",
               headerRight: () => <UserAvatorButton />,
               headerLeft: () => (
                 <Link href="/rooms-list" asChild>
@@ -133,7 +136,7 @@ export default function HomeLayout() {
             options={{ presentation: "modal", title: "ルールを承認する" }}
           />
           <Stack.Screen
-            name="first-approve-room-rule"
+            name="first-approve-room-rule/[id]"
             options={{
               presentation: "modal",
               title: "入室前にルールを確認する",

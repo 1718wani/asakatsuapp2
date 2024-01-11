@@ -12,8 +12,8 @@ export const DayButton = ({ day, selected, onSelect }: DayButtonProps) => {
   };
 
   const buttonStyle = selected
-    ? "bg-teal-600  rounded-full p-3 "
-    : "bg-white text-black rounded-full p-3 border border-gray-300";
+    ? "bg-teal-600 rounded-lg p-3 "
+    : "bg-white text-black rounded-lg p-3 border border-gray-300";
 
   return (
     <TouchableOpacity onPress={handlePress} className={buttonStyle}>

@@ -1,4 +1,3 @@
-import { router } from "expo-router";
 import { supabase } from "../../../libs/supabase";
 import { getUserId } from "../../User/apis/getUserId";
 
@@ -7,7 +6,7 @@ export const getDefaultRoomId = async () => {
 
   const { data: defaultRoomIdData, error: defaultRoomIdError } = await supabase
     .from("profiles")
-    .select("default_room")
+    .select("default_room_id")
     .eq("id", userId)
     .single();
 
@@ -16,10 +15,10 @@ export const getDefaultRoomId = async () => {
     throw defaultRoomIdError;
   }
 
-  if (!defaultRoomIdData.default_room) {
+  if (!defaultRoomIdData.default_room_id) {
     console.log("DefaultRoomIdが未登録でした");
-    return defaultRoomIdData.default_room;
+    return defaultRoomIdData.default_room_id;
   } else {
-    return defaultRoomIdData.default_room;
+    return defaultRoomIdData.default_room_id;
   }
 };

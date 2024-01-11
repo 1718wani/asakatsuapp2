@@ -1,15 +1,14 @@
 import { Database } from "../../../types/supabaseSchema";
-import { DisplayUserInfoProps } from "./DisplayUserInfoProps";
+
+type RoomMemberWithProfile = {
+  profiles: Database["public"]["Tables"]["profiles"]["Row"] | null;
+};
 
 export type DisplayedCardProps = {
   roomId: number;
   roomName?: string;
-  roomStatus?:
-    | Database["public"]["Enums"]["room_status"]
-    | null
-    | "招待中"
-    | "デフォルト";
+  myStatus: Database["public"]["Enums"]["room_member_status"];
   wakeUpTime?: string;
-  penaltyThreshold: number;
-  participants: DisplayUserInfoProps[];
+  purpose?: string;
+  participants: RoomMemberWithProfile[];
 };

@@ -9,6 +9,9 @@ import { UserPerformanceCard } from "../components/room-detail-components/UserPe
 import useSWR from "swr";
 import { getDefaultRoomInfo } from "../apis/getDefaultRoomInfo";
 import { DefaultRoomInvitationUserCards } from "../components/room-detail-components/DefaultRoomInvitationUserCards";
+import { getUserInfo } from "../apis/getUserInfo";
+import { WaitingDisplay } from "../components/WaitingDisplay";
+import { StartRoomButton } from "../components/room-detail-components/buttons/StartRoomButton";
 
 export const RoomDetailPageComponent = () => {
   const {
@@ -16,12 +19,24 @@ export const RoomDetailPageComponent = () => {
     isLoading: defaultRoomInfoLoading,
     error: defaultRoomInfoError,
   } = useSWR(["defaultRoomInfo"], () => getDefaultRoomInfo());
+
+  const {
+    data: userInfo,
+    isLoading: userInfoLoading,
+    error: userInfoError,
+  } = useSWR(["userInfo"], () => getUserInfo());
+
   console.log(defaultRoomInfo, "RoomDetailPageComponentでのdefaultRoomInfo");
+  console.log(userInfo, "RoomDetailPageComponentでのuserInfo");
 
   return (
     <>
       <View className=" fixed w-10/12 mx-auto my-2  ">
-        <DisplayedClock />
+        {defaultRoomInfo?.status === "ongoing" && <DisplayedClock />}
+        {defaultRoomInfo?.status === "inviting" &&
+          userInfo?.id === defaultRoomInfo.host_user && <StartRoomButton />}
+        {defaultRoomInfo?.status === "inviting" &&
+          userInfo?.id === defaultRoomInfo.host_user && <WaitingDisplay />}
       </View>
 
       <ScrollView>
@@ -98,7 +113,7 @@ export const RoomDetailPageComponent = () => {
                       avatarUrl={member.profiles?.avatar_url}
                       status={member.status}
                     />
-                  ) :  (
+                  ) : (
                     // 非アクティブなメンバー用のコンポーネント
                     <DefaultRoomInvitationUserCards
                       avatarUrl={member.profiles?.avatar_url}

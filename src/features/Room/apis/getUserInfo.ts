@@ -5,7 +5,7 @@ export const getUserInfo = async () => {
   const userId = await getUserId();
   const { data, error } = await supabase
     .from("profiles")
-    .select("user_name,avatar_url,user_code")
+    .select("user_name,avatar_url,user_code,id")
     .eq("id", userId)
     .single();
 

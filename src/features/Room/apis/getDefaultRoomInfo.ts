@@ -13,7 +13,8 @@ export const getDefaultRoomInfo = async () => {
       `
   id,
   name,
-  purpose,    
+  purpose,
+  host_user,    
   status, 
   rules (
     penalty_threshold,
@@ -38,6 +39,8 @@ export const getDefaultRoomInfo = async () => {
     throw error;
   }
 
+
+
   // room_membersでuserIdと一致するメンバーを先頭に移動
   // これにより、自分自身のデータは0番目、それ以外は1番目以降から取得すればよい。
   if (data && data.room_members) {
@@ -49,6 +52,7 @@ export const getDefaultRoomInfo = async () => {
       data.room_members.unshift(userMember);
     }
   }
+
 
   return data;
 };

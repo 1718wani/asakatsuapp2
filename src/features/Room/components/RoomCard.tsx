@@ -3,11 +3,7 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
 import { path } from "../../../consts/path";
 import { DisplayedCardProps } from "../types/DisplayedCardProps";
-import { updateDefaultRoomId } from "../apis/updateDefaultRoomId";
 import Toast from "react-native-toast-message";
-import { mutate } from "swr";
-import { updateRoomStatus } from "../apis/updateRoomStatus";
-import { updateRoomMemberStatus } from "../apis/updateRoomMemberStatus";
 
 export const RoomCard = (props: DisplayedCardProps) => {
   const cardClickHandler = async (roomId: number) => {
@@ -38,7 +34,7 @@ export const RoomCard = (props: DisplayedCardProps) => {
                   <Text className=" text-white">{props.myStatus}</Text>
                 </View>
               </View>
-             
+
               <View className="flex flex-row space-x-2 items-center">
                 <Text className="text-gray-500 text-sm pr-2">
                   {props.purpose}

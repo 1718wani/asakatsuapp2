@@ -19,6 +19,8 @@ export const RuleDetailForFirstApproval = (props: ruleProps) => {
     await updateRoomMemberStatus(props.roomId, "active");
     // タイトルを現状のデフォルトルームの名前に変える。
     await mutate(["defaultRoomName"]);
+    // ルーム情報を更新する。
+    await mutate(["defaultRoomInfo"]);
     router.push(path.dashboard);
   };
   return (

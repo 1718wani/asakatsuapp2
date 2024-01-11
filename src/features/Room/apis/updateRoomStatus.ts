@@ -1,10 +1,12 @@
 import { supabase } from "../../../libs/supabase";
 import { Database } from "../../../types/supabaseSchema";
+import { getDefaultRoomId } from "./getDefaultRoomId";
 
 export const updateRoomStatus = async (
-  roomStatus: Database["public"]["Enums"]["room_status"],
-  roomId: number
+  roomStatus: Database["public"]["Enums"]["room_status"]
 ) => {
+  const roomId = await getDefaultRoomId();
+  if (!roomId) return null;
   const { error } = await supabase
     .from("rooms")
     .update({ status: roomStatus })

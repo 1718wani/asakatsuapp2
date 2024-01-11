@@ -1,22 +1,19 @@
 import useSWR from "swr";
-import { getAllMyRoomsForRoomsListDisplayExceptDefault } from "../../apis/getAllMyRoomsForRoomsListDisplayExceptDefault";
-import { CardComponentProps } from "../../types/CardComponentProps";
 import Toast from "react-native-toast-message";
 import { Skeleton } from "@rneui/themed";
+import { getAllMyRoomsForRoomsListDisplay } from "../../apis/getAllMyRoomsForRoomsListDisplay";
 import { RoomCard } from "../RoomCard";
 
-export const AllCardsExceptComponent = (props: CardComponentProps) => {
+export const AllMyRoomsComponent = () => {
   const {
-    data: allMyRooms,
-    isLoading: allMyRoomsLoading,
-    error: allMyRoomsError,
-  } = useSWR(["allMyRoomsExceptDefault"], () =>
-    getAllMyRoomsForRoomsListDisplayExceptDefault(props.defaultRoomId)
-  );
+    data: getAllMyRooms,
+    isLoading: getAllMyRoomsLoading,
+    error: getAllMyRoomsError,
+  } = useSWR(["allMyJoinedRooms"], () => getAllMyRoomsForRoomsListDisplay());
 
   return (
     <>
-      {allMyRoomsLoading && (
+      {getAllMyRoomsLoading && (
         <>
           {Array.from(Array(3).keys()).map((index) => (
             <Skeleton
@@ -28,21 +25,21 @@ export const AllCardsExceptComponent = (props: CardComponentProps) => {
           ))}
         </>
       )}
-      {allMyRoomsError &&
+      {getAllMyRoomsError &&
         Toast.show({
           type: "error",
           text1: "参加しているルーム一覧が取得できませんでした",
         })}
-      {allMyRooms &&
-        allMyRooms.map(({ rooms, room_id }) => {
+      {getAllMyRooms &&
+        getAllMyRooms.map(({ status, rooms, room_id }) => {
           return (
             <RoomCard
               key={room_id}
               roomId={room_id}
               roomName={rooms?.name}
-              roomStatus={rooms?.status}
+              myStatus={status}
               wakeUpTime={rooms?.rules?.wakeup_time}
-              penaltyThreshold={rooms?.rules?.penalty_threshold ?? 5}
+              purpose={rooms?.purpose}
               participants={rooms?.room_members ?? []}
             />
           );

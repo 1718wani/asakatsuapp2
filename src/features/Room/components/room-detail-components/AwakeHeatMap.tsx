@@ -14,7 +14,6 @@ import { Skeleton } from "@rneui/themed";
 import Toast from "react-native-toast-message";
 
 export const AwakeHeatMap = () => {
-  const defaultRoomId = useAtomValue(defaultRoomIdAtom);
   const dates = getLastMonthFirstDateAndThisMonthLastDate();
 
   const {
@@ -24,7 +23,7 @@ export const AwakeHeatMap = () => {
   } = useSWR(["defaultRoom"], () =>
     getAwakeSuccessCountForHeatMap(
       // defaultRoomがない場合、負の数を返してNullを返す
-      defaultRoomId,
+
       dates.firstDateOfLastMonth,
       dates.lastDateOfCurrentMonth
     )

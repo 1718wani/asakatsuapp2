@@ -14,21 +14,21 @@ export interface Database {
           alarm_time: string
           id: number
           room_id: number
-          status: Database["public"]["Enums"]["alarm_status_enum"] | null
+          status: Database["public"]["Enums"]["alarm_status_enum"]
           user_id: string
         }
         Insert: {
           alarm_time?: string
           id?: number
           room_id: number
-          status?: Database["public"]["Enums"]["alarm_status_enum"] | null
+          status?: Database["public"]["Enums"]["alarm_status_enum"]
           user_id: string
         }
         Update: {
           alarm_time?: string
           id?: number
           room_id?: number
-          status?: Database["public"]["Enums"]["alarm_status_enum"] | null
+          status?: Database["public"]["Enums"]["alarm_status_enum"]
           user_id?: string
         }
         Relationships: [
@@ -51,46 +51,33 @@ export interface Database {
       invitations: {
         Row: {
           approved: boolean
-          created_at: string
-          created_by: string
-          id: number
-          room_id: number
-          user_id: string
+          create_user: string
+          created_timestamp: string
+          invited_user: string
         }
         Insert: {
           approved?: boolean
-          created_at?: string
-          created_by: string
-          id?: number
-          room_id: number
-          user_id: string
+          create_user: string
+          created_timestamp?: string
+          invited_user: string
         }
         Update: {
           approved?: boolean
-          created_at?: string
-          created_by?: string
-          id?: number
-          room_id?: number
-          user_id?: string
+          create_user?: string
+          created_timestamp?: string
+          invited_user?: string
         }
         Relationships: [
           {
-            foreignKeyName: "invitations_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "invitations_create_user_fkey"
+            columns: ["create_user"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "invitations_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "rooms"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "invitations_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "invitations_invited_user_fkey"
+            columns: ["invited_user"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -100,7 +87,7 @@ export interface Database {
       profiles: {
         Row: {
           avatar_url: string
-          default_room: number | null
+          default_room_id: number | null
           id: string
           updated_at: string | null
           user_code: string
@@ -108,7 +95,7 @@ export interface Database {
         }
         Insert: {
           avatar_url?: string
-          default_room?: number | null
+          default_room_id?: number | null
           id: string
           updated_at?: string | null
           user_code?: string
@@ -116,7 +103,7 @@ export interface Database {
         }
         Update: {
           avatar_url?: string
-          default_room?: number | null
+          default_room_id?: number | null
           id?: string
           updated_at?: string | null
           user_code?: string
@@ -124,8 +111,8 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "profiles_default_room_fkey"
-            columns: ["default_room"]
+            foreignKeyName: "profiles_default_room_id_fkey"
+            columns: ["default_room_id"]
             isOneToOne: false
             referencedRelation: "rooms"
             referencedColumns: ["id"]
@@ -145,6 +132,7 @@ export interface Database {
           penalty_count: number
           room_id: number
           skip_count: number
+          status: Database["public"]["Enums"]["room_member_status"]
           total_failure_count: number
           total_success_count: number
           user_id: string
@@ -154,6 +142,7 @@ export interface Database {
           penalty_count?: number
           room_id: number
           skip_count?: number
+          status?: Database["public"]["Enums"]["room_member_status"]
           total_failure_count?: number
           total_success_count?: number
           user_id: string
@@ -163,6 +152,7 @@ export interface Database {
           penalty_count?: number
           room_id?: number
           skip_count?: number
+          status?: Database["public"]["Enums"]["room_member_status"]
           total_failure_count?: number
           total_success_count?: number
           user_id?: string
@@ -319,7 +309,8 @@ export interface Database {
     Enums: {
       alarm_status_enum: "pause" | "standby" | "success" | "failure"
       days_enum: "0" | "1" | "2" | "3" | "4" | "5" | "6"
-      room_status: "active" | "suspended" | "standby"
+      room_member_status: "active" | "inactive" | "invited"
+      room_status: "ongoing" | "suspended" | "inviting" | "joined"
       skip_period_enum: "weekly" | "monthly"
       user_activity_type_enum:
         | "invite_make"

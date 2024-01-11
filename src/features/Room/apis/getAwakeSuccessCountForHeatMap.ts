@@ -1,10 +1,11 @@
 import { supabase } from "../../../libs/supabase";
+import { getDefaultRoomId } from "./getDefaultRoomId";
 
 export const getAwakeSuccessCountForHeatMap = async (
-  roomId: number | null,
   firstDate: string,
   lastDate: string
 ) => {
+  const roomId = await getDefaultRoomId();
   if (!roomId) return null;
   const { data, error } = await supabase
     .from("user_activity_logs")

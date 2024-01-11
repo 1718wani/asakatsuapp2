@@ -1,57 +1,53 @@
 import { supabase } from "../../../libs/supabase";
 import { getUserId } from "../../User/apis/getUserId";
+import { getDefaultRoomId } from "./getDefaultRoomId";
 
-export const getDefaultRoomForRoomsListDisplay = async (
-  roomId: number | null
-) => {
+export const getDefaultRoomForRoomsListDisplay = async () => {
+  const defaultRoomId = await getDefaultRoomId();
+  // デフォルトルームがない場合Nullが返される
+  if (!defaultRoomId) return null;
   const userId = await getUserId();
-  if (!roomId) return null;
   const { data, error } = await supabase
-    .from("rooms")
+    .from("room_members")
     .select(
       `
-  id,
-  name,    
-  purpose,
-  status, 
-  rules (
-    penalty_detail,
-    penalty_threshold,
-    skip_limit,
-    wakeup_time
-  ),
-  room_members (
-    *,
-    profiles (
-      id,
-      user_name,
-      avatar_url
+      room_id,
+      rooms (
+        *,
+        rules (
+          penalty_threshold,
+          wakeup_time
+        ),
+        room_members (
+          failure_count,
+          profiles (
+            id,
+            user_name,
+            avatar_url,
+            default_room_id
+          )
+        )
+      )
+    `
     )
-  )
-`
-    )
-    .eq("id", roomId)
+    .eq("user_id", userId)
+    .eq("room_id", defaultRoomId)
     .single();
 
   if (error) {
-    console.error(error);
+    console.error(
+      "デフォルトルームとその付随情報取得でエラーが出ました",
+      error
+    );
     throw error;
-  } else {
-    console.log("Retrieved default room data:", data);
   }
 
-  // userIdと合致するroom_membersを並び替える
-  if (data && data.room_members) {
-    const currentUserMemberIndex = data.room_members.findIndex(
-      (member) => member.profiles?.id === userId
-    );
-    if (currentUserMemberIndex > -1) {
-      const currentUserMember = data.room_members.splice(
-        currentUserMemberIndex,
-        1
-      )[0];
-      data.room_members.unshift(currentUserMember);
-    }
+  // userIdと一致しているRoom_membersを並べ替える。
+  if (data && data.rooms && data.rooms.room_members) {
+    const sortedRoomMembers = data.rooms.room_members.sort((a, b) => {
+      return a.profiles?.id === userId ? -1 : b.profiles?.id === userId ? 1 : 0;
+    });
+    data.rooms.room_members = sortedRoomMembers;
   }
 
   return data;

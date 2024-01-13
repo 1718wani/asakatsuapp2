@@ -91,7 +91,7 @@ export interface Database {
           id: string
           updated_at: string | null
           user_code: string
-          user_name: string
+          user_name: string | null
         }
         Insert: {
           avatar_url?: string
@@ -99,7 +99,7 @@ export interface Database {
           id: string
           updated_at?: string | null
           user_code?: string
-          user_name?: string
+          user_name?: string | null
         }
         Update: {
           avatar_url?: string
@@ -107,7 +107,7 @@ export interface Database {
           id?: string
           updated_at?: string | null
           user_code?: string
-          user_name?: string
+          user_name?: string | null
         }
         Relationships: [
           {
@@ -122,6 +122,81 @@ export interface Database {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      request_approvals: {
+        Row: {
+          approved: boolean
+          approver_id: string
+          request_id: number
+        }
+        Insert: {
+          approved?: boolean
+          approver_id: string
+          request_id?: number
+        }
+        Update: {
+          approved?: boolean
+          approver_id?: string
+          request_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_approvals_approver_id_fkey"
+            columns: ["approver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "request_approvals_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      requests: {
+        Row: {
+          approved: boolean
+          created_by: string
+          created_timestamp: string
+          id: number
+          room_id: number
+          type: Database["public"]["Enums"]["request_type_enum"]
+        }
+        Insert: {
+          approved?: boolean
+          created_by: string
+          created_timestamp?: string
+          id?: number
+          room_id: number
+          type: Database["public"]["Enums"]["request_type_enum"]
+        }
+        Update: {
+          approved?: boolean
+          created_by?: string
+          created_timestamp?: string
+          id?: number
+          room_id?: number
+          type?: Database["public"]["Enums"]["request_type_enum"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "requests_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "requests_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
             referencedColumns: ["id"]
           }
         ]
@@ -309,6 +384,11 @@ export interface Database {
     Enums: {
       alarm_status_enum: "pause" | "standby" | "success" | "failure"
       days_enum: "0" | "1" | "2" | "3" | "4" | "5" | "6"
+      request_type_enum:
+        | "penalty_approve_request"
+        | "rule_approve_request"
+        | "leave_request"
+        | "deactivate_request"
       room_member_status: "active" | "inactive" | "invited"
       room_status: "ongoing" | "suspended" | "inviting" | "joined"
       skip_period_enum: "weekly" | "monthly"

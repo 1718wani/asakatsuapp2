@@ -39,7 +39,7 @@ export default function HomeLayout() {
       if (session) {
         fetchUserName(session.user.id).then((userName) => {
           // ユーザーネームのデフォルト値は""
-          if (userName.user_name.length > 0) {
+          if (userName.user_name) {
             getDefaultRoomId().then((defaultRoom) => {
               if (defaultRoom) {
                 setInitialPageRouting(path.dashboard);

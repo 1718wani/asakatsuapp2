@@ -23,6 +23,7 @@
     "@types/aes-js": "^3.1.4",
     "@uiw/react-heat-map": "^2.2.1",
     "aes-js": "^3.1.2",
+    "base64-arraybuffer": "^1.0.2",
     "better-supabase-types": "^2.7.0",
     "boring-avatars": "^1.10.1",
     "date-fns": "^3.0.6",

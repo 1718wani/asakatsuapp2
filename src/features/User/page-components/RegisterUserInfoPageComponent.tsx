@@ -10,8 +10,6 @@ export default function RegisterUserInfoPageComponent() {
   const [image, setImage] = useState<string>(defaultProfileImageUrl);
   const { handleSubmit, control, errors, onSubmit } = useProfileForm(image);
 
-  console.log(image, "現在セットされているイメージ");
-
   return (
     <>
       <View className=" mx-auto my-auto pb-40">

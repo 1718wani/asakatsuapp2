@@ -18,7 +18,7 @@ export const submitRoomCreate = async (data: roomCreateFormProps) => {
     );
 
     const room = await createRoom(data.roomName, data.roomDescription, ruleId);
-    await createInvitations(room[0].id, data.invitedMembers);
+    await createInvitations(room.id, data.invitedMembers);
     router.back();
     Toast.show({
       type: "success",

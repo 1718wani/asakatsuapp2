@@ -3,7 +3,7 @@ import Toast from "react-native-toast-message";
 import { Skeleton } from "@rneui/themed";
 import { getAllMyRoomsForRoomsListDisplay } from "../../apis/getAllMyRoomsForRoomsListDisplay";
 import { RoomCard } from "../RoomCard";
-import { Text } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 export const AllMyRoomsComponent = () => {
   const {
@@ -11,8 +11,6 @@ export const AllMyRoomsComponent = () => {
     isLoading: AllMyRoomsLoading,
     error: AllMyRoomsError,
   } = useSWR(["allMyJoinedRooms"], () => getAllMyRoomsForRoomsListDisplay());
-
-  console.log(AllMyRooms, "リストデータ");
 
   return (
     <>
@@ -34,21 +32,25 @@ export const AllMyRoomsComponent = () => {
           text1: "参加しているルーム一覧が取得できませんでした",
         })}
       {AllMyRooms && AllMyRooms.length > 0 ? (
-        AllMyRooms.map(({ status, rooms, room_id }) => (
-          <RoomCard
-            key={room_id}
-            roomId={room_id}
-            roomName={rooms?.name}
-            myStatus={status}
-            wakeUpTime={rooms?.rules?.wakeup_time}
-            purpose={rooms?.purpose}
-            participants={rooms?.room_members ?? []}
-          />
-        ))
+        <ScrollView>
+          <View className="flex-1">
+            {AllMyRooms.map(({ status, rooms, room_id }) => (
+              <RoomCard
+                key={room_id}
+                roomId={room_id}
+                roomName={rooms?.name}
+                myStatus={status}
+                wakeUpTime={rooms?.rules?.wakeup_time}
+                purpose={rooms?.purpose}
+                participants={rooms?.room_members ?? []}
+              />
+            ))}
+          </View>
+        </ScrollView>
       ) : (
-        <Text className=" text-center mt-60 ">
+        <Text className=" text-center mt-56 ">
           現在表示されるルームはありません
-        </Text> // 空の場合に表示するテキスト
+        </Text>
       )}
     </>
   );

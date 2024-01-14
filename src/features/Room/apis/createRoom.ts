@@ -19,7 +19,8 @@ export const createRoom = async (
         rule: ruleId,
       },
     ])
-    .select();
+    .select()
+    .single();
 
   if (error) {
     throw error;

@@ -51,35 +51,45 @@ export interface Database {
       invitations: {
         Row: {
           approved: boolean
-          create_user: string
+          create_user_id: string
           created_timestamp: string
-          invited_user: string
+          invited_user_id: string
+          room_id: number
         }
         Insert: {
           approved?: boolean
-          create_user: string
+          create_user_id: string
           created_timestamp?: string
-          invited_user: string
+          invited_user_id: string
+          room_id: number
         }
         Update: {
           approved?: boolean
-          create_user?: string
+          create_user_id?: string
           created_timestamp?: string
-          invited_user?: string
+          invited_user_id?: string
+          room_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "invitations_create_user_fkey"
-            columns: ["create_user"]
+            foreignKeyName: "invitations_create_user_id_fkey"
+            columns: ["create_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "invitations_invited_user_fkey"
-            columns: ["invited_user"]
+            foreignKeyName: "invitations_invited_user_id_fkey"
+            columns: ["invited_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invitations_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
             referencedColumns: ["id"]
           }
         ]

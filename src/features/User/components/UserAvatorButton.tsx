@@ -3,17 +3,20 @@ import { Link } from "expo-router";
 import { Pressable, View } from "react-native";
 import { path } from "../../../consts/path";
 import { Image } from "expo-image";
-import useSWR from "swr";
 import { getUserInfo } from "../../Room/apis/getUserInfo";
 import Toast from "react-native-toast-message";
 import { Skeleton } from "@rneui/themed";
+import { useQuery } from "@tanstack/react-query";
 
 export const UserAvatorButton = () => {
   const {
     data: userInfo,
     isLoading: userInfoLoading,
     error: userInfoError,
-  } = useSWR(["userInfo"], () => getUserInfo());
+  } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => getUserInfo(),
+  });
 
   return (
     <>

@@ -5,6 +5,7 @@ import { updateDefaultRoomId } from "../apis/updateDefaultRoomId";
 import { updateRoomMemberStatus } from "../apis/updateRoomMemberStatus";
 import { mutate } from "swr";
 import { path } from "../../../consts/path";
+import { getRoomStatus } from "../apis/rooms/getRoomStatus";
 
 type ruleProps = {
   roomId: number;
@@ -12,11 +13,17 @@ type ruleProps = {
 };
 
 export const RuleDetailForFirstApproval = (props: ruleProps) => {
-
   const handleApprovalButton = async () => {
-    console.log(props.roomId,"roomidだよ")
     await updateDefaultRoomId(props.roomId);
-    await updateRoomMemberStatus(props.roomId, "active");
+    // roomがisOngoingなら、activeにする。roomがそうじゃなければ
+    const roomStatus = await getRoomStatus(props.roomId);
+
+    if (roomStatus === "ongoing") {
+      await updateRoomMemberStatus(props.roomId, "active");
+    } else {
+      await updateRoomMemberStatus(props.roomId, "inactive");
+    }
+
     // タイトルを現状のデフォルトルームの名前に変える。
     await mutate(["defaultRoomName"]);
     // ルーム情報を更新する。

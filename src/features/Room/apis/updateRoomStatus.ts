@@ -1,5 +1,6 @@
 import { supabase } from "../../../libs/supabase";
 import { Database } from "../../../types/supabaseSchema";
+
 import { getDefaultRoomId } from "./getDefaultRoomId";
 
 export const updateRoomStatus = async (

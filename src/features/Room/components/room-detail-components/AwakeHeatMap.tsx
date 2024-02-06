@@ -1,17 +1,13 @@
 import { Text, View } from "react-native";
 import CuteDragon from "../../../../components/CuteDragon";
-import { endOfMonth, format, startOfMonth, subMonths } from "date-fns";
-import { useAtomValue } from "jotai";
-import { defaultRoomIdAtom } from "../../../../states/defaultRoomAtom";
-import useSWR from "swr";
 import { getAwakeSuccessCountForHeatMap } from "../../apis/getAwakeSuccessCountForHeatMap";
-import { Database } from "../../../../types/supabaseSchema";
 import { makeDateAndSuccessCountArray } from "../../functions/heatmap-functions/makeDateAndSuccessCountArray";
 import { getLastMonthFirstDateAndThisMonthLastDate } from "../../functions/heatmap-functions/getLastMonthFirstDateAndThisMonthLastDate";
 import { colorsForCountOnHeatMap } from "../../consts/colorsForCountOnHeatMap";
 import { splitArrayIntoChunks } from "../../functions/heatmap-functions/splitArrayIntoChunks";
 import { Skeleton } from "@rneui/themed";
 import Toast from "react-native-toast-message";
+import { useQuery } from "@tanstack/react-query";
 
 export const AwakeHeatMap = () => {
   const dates = getLastMonthFirstDateAndThisMonthLastDate();
@@ -20,14 +16,16 @@ export const AwakeHeatMap = () => {
     data: heatMapData,
     isLoading: heatMapDataIsLoading,
     error: heatMapDataError,
-  } = useSWR(["defaultRoom"], () =>
-    getAwakeSuccessCountForHeatMap(
-      // defaultRoomがない場合、負の数を返してNullを返す
+  } = useQuery({
+    queryKey: ["defaultRoom"],
+    queryFn: () =>
+      getAwakeSuccessCountForHeatMap(
+        // defaultRoomがない場合、負の数を返してNullを返す
 
-      dates.firstDateOfLastMonth,
-      dates.lastDateOfCurrentMonth
-    )
-  );
+        dates.firstDateOfLastMonth,
+        dates.lastDateOfCurrentMonth
+      ),
+  });
 
   const pairData = makeDateAndSuccessCountArray(heatMapData);
   const splitValuesBySeven = splitArrayIntoChunks(pairData, 7);
@@ -64,7 +62,7 @@ export const AwakeHeatMap = () => {
               </View>
             </View>
             <View className="ml-14 ">
-              <Text className=" flex items-center">全員成功率は80%！</Text>
+              <Text className=" flex items-center">成功率は80%！</Text>
               <CuteDragon />
             </View>
           </View>

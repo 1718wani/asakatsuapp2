@@ -1,4 +1,4 @@
-import { supabase } from "../../../libs/supabase";
+import { supabase } from "../../../../libs/supabase";
 
 export const getRule = async (roomId: number) => {
   const { data, error } = await supabase

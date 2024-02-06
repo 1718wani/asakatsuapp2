@@ -1,28 +1,30 @@
-import useSWR from "swr";
 import Toast from "react-native-toast-message";
 import { Skeleton } from "@rneui/themed";
 import { getAllMyRoomsForRoomsListDisplay } from "../../apis/getAllMyRoomsForRoomsListDisplay";
 import { RoomCard } from "../RoomCard";
 import { ScrollView, Text, View } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { useRefreshOnFocus } from "../../../../hooks/useRefreshOnFocus";
 
 export const AllMyRoomsComponent = () => {
   const {
     data: AllMyRooms,
     isLoading: AllMyRoomsLoading,
     error: AllMyRoomsError,
-  } = useSWR(["allMyJoinedRooms"], () => getAllMyRoomsForRoomsListDisplay());
+    refetch: refetchAllMyRooms,
+  } = useQuery({
+    queryKey: ["allMyJoinedRooms"],
+    queryFn: () => getAllMyRoomsForRoomsListDisplay(),
+  });
+
+  useRefreshOnFocus(refetchAllMyRooms);
 
   return (
     <>
       {AllMyRoomsLoading && (
         <>
           {Array.from(Array(3).keys()).map((index) => (
-            <Skeleton
-              key={index}
-              width={100}
-              animation="wave"
-              className=" ml-2 rounded-3xl"
-            />
+            <Skeleton key={index} />
           ))}
         </>
       )}

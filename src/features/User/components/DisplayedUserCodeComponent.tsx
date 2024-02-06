@@ -8,12 +8,13 @@ import Toast from "react-native-toast-message";
 import { supabase } from "../../../libs/supabase";
 import { router } from "expo-router";
 import { fetchUserCode } from "../apis/fetchUserCode";
-import useSWR from "swr";
 import { Skeleton } from "@rneui/themed";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 const DisplayUserCode = () => {
-  const { data: userCode } = useSWR(["userCode"], () => fetchUserCode(), {
-    suspense: true, // Suspenseモードを有効化
+  const { data: userCode } = useSuspenseQuery({
+    queryKey: ["userCode"],
+    queryFn: () => fetchUserCode(),
   });
 
   const copyToClipboard = async () => {

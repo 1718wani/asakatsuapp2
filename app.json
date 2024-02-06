@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "asakatsuapp2",
-    "slug": "asakatsuapp2",
+    "name": "expo-asakatsu-app",
+    "slug": "expo-asakatsu-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,10 +11,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "jsEngine": "hermes"
+      "jsEngine": "hermes",
+      "bundleIdentifier": "com.yaikun.expoasakatsuapp"
     },
     "scheme": "com.supabase",
     "android": {
@@ -22,20 +25,33 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "jsEngine": "hermes"
+      "jsEngine": "hermes",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "plugins": [
-      ["expo-router"],
+      [
+        "expo-router"
+      ],
       [
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b055f49b-5bd8-4fef-82d6-33c68303117e"
+      }
+    },
+    "owner": "yaikun"
   }
 }

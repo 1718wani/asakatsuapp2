@@ -1,10 +1,10 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { updateRoomStatus } from "../../../apis/updateRoomStatus";
 import { getDefaultRoomId } from "../../../apis/getDefaultRoomId";
-import { sendPushNotifications } from "../../../../AlarmClock/functions/sendPushNotifications";
 import { updateRoomMembersStatus } from "../../../apis/room_members/updateRoomMembersStatus";
 import { getRoomMembers } from "../../../apis/room_members/getRoomMembers";
 import { getPushTokens } from "../../../../AlarmClock/apis/getPushTokens";
+import { sendPushNotification } from "../../../../AlarmClock/functions/sendPushNotifiations";
 
 export const StartRoomButton = () => {
   const handleRoomStartButton = async () => {
@@ -27,7 +27,7 @@ export const StartRoomButton = () => {
     // activeなメンバーに通知を届ける。
     const pushTokens = await getPushTokens(userIds);
     console.log(pushTokens, "pushTokens");
-    await sendPushNotifications(
+    await sendPushNotification(
       pushTokens?.map((token) => token.expo_push_token),
       "朝活がスタートしました！",
       "実施日にはアプリを訪れて起きたよボタンを押してください！"

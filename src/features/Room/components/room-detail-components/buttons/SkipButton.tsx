@@ -27,7 +27,6 @@ export const SkipButton = () => {
     const skipCount = (await getRoomMember(defaultRoomId, userId)).skip_count;
 
     if (skipLimit === skipCount) {
-      
     } else {
       setModalVisible(true);
     }

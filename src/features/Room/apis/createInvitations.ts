@@ -8,21 +8,22 @@ export const createInvitations = async (
   participantCodes: string[]
 ) => {
   // ユーザーコードからユーザーIDを取得
-  const myId = await getUserId();
+  const myUserId = await getUserId();
   const participantIds = await getUserIdsFromUserCodes(participantCodes);
 
   // 招待状の配列を作成
   const invitations = participantIds.map((participantId) => ({
-    user_id: participantId,
+    invited_user_id: participantId,
     room_id: roomId,
-    created_by: myId,
+    create_user_id: myUserId,
     // `approved` と `created_at` はデフォルト値を使用
   }));
 
+  console.log("invitations", invitations);
+
   const { data, error } = await supabase
-    .from("invitation")
-    .insert(invitations)
-    .select();
+    .from("invitations")
+    .insert(invitations);
 
   if (error) {
     console.error("Error in creating invitations:", error);

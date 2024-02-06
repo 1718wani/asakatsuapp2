@@ -36,8 +36,13 @@ export const UserPerformanceCard = (props: UserPerformanceProps) => {
             残ペナルティ{props.penaltyCount}
           </Text>
           <View className="flex flex-row items-center space-x-1">
-            {Array.from({ length: props.penaltyCount }, (_, index) => (
-              <Ionicons key={index} name="flag" size={14} color="black"  />
+            {Array.from({ length: 5 }, (_, index) => (
+              <Ionicons
+                key={index}
+                name="flag"
+                size={14}
+                color={index < props.penaltyCount ? "black" : "lightgray"}
+              />
             ))}
           </View>
           <Text className=" text-sm font-bold">

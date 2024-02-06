@@ -15,7 +15,7 @@ export const getDefaultRoomId = async () => {
     throw defaultRoomIdError;
   }
 
-  if (!defaultRoomIdData.default_room_id) {
+  if (defaultRoomIdData.default_room_id === null) {
     console.log("DefaultRoomIdが未登録でした");
     return defaultRoomIdData.default_room_id;
   } else {

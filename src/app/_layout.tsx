@@ -9,7 +9,7 @@ import {
 } from "expo-router";
 
 import { Image } from "expo-image";
-import { Pressable, View } from "react-native";
+import { AppStateStatus, Platform, Pressable, View } from "react-native";
 import { path } from "../consts/path";
 import { UserAvatorButton } from "../features/User/components/UserAvatorButton";
 import { RootSiblingParent } from "react-native-root-siblings";
@@ -21,8 +21,12 @@ import { fetchUserName } from "../features/User/apis/fetchUserName";
 import Toast from "react-native-toast-message";
 import { Session } from "@supabase/supabase-js";
 import { getDefaultRoomId } from "../features/Room/apis/getDefaultRoomId";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import { getDefaultRoomName } from "../features/Room/apis/getDefaultRoomName";
+import { QueryClientProvider, focusManager } from "@tanstack/react-query";
+import { queryClient } from "../libs/queryClient";
+import { useOnlineManager } from "../hooks/useOnlineManager";
+import { useAppState } from "../hooks/useAppState";
 
 SplashScreen.preventAutoHideAsync();
 export default function HomeLayout() {
@@ -39,7 +43,7 @@ export default function HomeLayout() {
       if (session) {
         fetchUserName(session.user.id).then((userName) => {
           // ユーザーネームのデフォルト値は""
-          if (userName.user_name.length > 0) {
+          if (userName.user_name) {
             getDefaultRoomId().then((defaultRoom) => {
               if (defaultRoom) {
                 setInitialPageRouting(path.dashboard);
@@ -87,82 +91,96 @@ export default function HomeLayout() {
   const shouldShowButton =
     pathName === path.dashboard || pathName === path.timeline;
 
+  function onAppStateChange(status: AppStateStatus) {
+    // React Query already supports in web browser refetch on window focus by default
+    if (Platform.OS !== "web") {
+      focusManager.setFocused(status === "active");
+    }
+  }
+
+  // react-nativeの状態管理
+  useOnlineManager();
+
+  useAppState(onAppStateChange);
+
   return (
     <>
-      <RootSiblingParent>
-        <Stack>
-          <Stack.Screen
-            name="(room)"
-            options={{
-              title: defaultRoomName ? defaultRoomName.name : "タイトル",
-              headerRight: () => <UserAvatorButton />,
-              headerLeft: () => (
-                <Link href="/rooms-list" asChild>
-                  <Pressable>
-                    {({ pressed }) => (
-                      <FontAwesome5
-                        name="door-open"
-                        size={18}
-                        color="black"
-                        style={{ opacity: pressed ? 0.5 : 1 }}
-                      />
-                    )}
-                  </Pressable>
-                </Link>
-              ),
-            }}
-          />
+      <QueryClientProvider client={queryClient}>
+        <RootSiblingParent>
+          <Stack>
+            <Stack.Screen
+              name="(room)"
+              options={{
+                title: defaultRoomName ? defaultRoomName.name : "タイトル",
+                headerRight: () => <UserAvatorButton />,
+                headerLeft: () => (
+                  <Link href="/rooms-list" asChild>
+                    <Pressable>
+                      {({ pressed }) => (
+                        <FontAwesome5
+                          name="door-open"
+                          size={18}
+                          color="black"
+                          style={{ opacity: pressed ? 0.5 : 1 }}
+                        />
+                      )}
+                    </Pressable>
+                  </Link>
+                ),
+              }}
+            />
 
-          <Stack.Screen
-            name="rooms-list"
-            options={{
-              title: "ルーム一覧",
-              headerRight: () => <UserAvatorButton />,
+            <Stack.Screen
+              name="rooms-list"
+              options={{
+                title: "ルーム一覧",
+                headerRight: () => <UserAvatorButton />,
 
-              headerBackVisible: false,
-            }}
-          />
+                headerBackVisible: false,
+              }}
+            />
 
-          <Stack.Screen
-            name="create-room"
-            options={{ presentation: "modal", title: "ルームを作成する" }}
-          />
-          <Stack.Screen
-            name="edit-room-rule"
-            options={{ presentation: "modal", title: "ルールを変える" }}
-          />
-          <Stack.Screen
-            name="approve-room-rule"
-            options={{ presentation: "modal", title: "ルールを承認する" }}
-          />
-          <Stack.Screen
-            name="first-approve-room-rule/[id]"
-            options={{
-              presentation: "modal",
-              title: "入室前にルールを確認する",
-            }}
-          />
-          <Stack.Screen
-            name="edit-user"
-            options={{ presentation: "modal", title: "ユーザー情報" }}
-          />
-          <Stack.Screen
-            name="register-user-info"
-            options={{ presentation: "modal", title: "ようこそ！" }}
-          />
-          <Stack.Screen
-            name="sign-in"
-            options={{ title: "サインイン", headerBackVisible: false }}
-          />
-        </Stack>
+            <Stack.Screen
+              name="create-room"
+              options={{ presentation: "modal", title: "ルームを作成する" }}
+            />
+            <Stack.Screen
+              name="edit-room-rule"
+              options={{ presentation: "modal", title: "ルールを変える" }}
+            />
+            <Stack.Screen
+              name="approve-room-rule"
+              options={{ presentation: "modal", title: "ルールを承認する" }}
+            />
+            <Stack.Screen
+              name="first-approve-room-rule/[id]"
+              options={{
+                presentation: "modal",
+                title: "入室前にルールを確認する",
+              }}
+            />
+            <Stack.Screen
+              name="edit-user"
+              options={{ presentation: "modal", title: "ユーザー情報" }}
+            />
+            <Stack.Screen
+              name="register-user-info"
+              options={{ presentation: "modal", title: "ようこそ！" }}
+            />
+            <Stack.Screen
+              name="sign-in"
+              options={{ title: "サインイン", headerBackVisible: false }}
+            />
+          </Stack>
 
-        {shouldShowButton && (
-          <View className="absolute bottom-0 mb-5 ml-40  ">
-            <RoomStatusOrStopButton />
-          </View>
-        )}
-        <Toast position="bottom" />
-      </RootSiblingParent>
+          {shouldShowButton && (
+            <View className="absolute bottom-0 mb-5 ml-40  ">
+              <RoomStatusOrStopButton />
+            </View>
+          )}
+          <Toast position="bottom" />
+        </RootSiblingParent>
+      </QueryClientProvider>
     </>
   );
 }

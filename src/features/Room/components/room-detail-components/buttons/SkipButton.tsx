@@ -10,11 +10,27 @@ import {
 import Toast from "react-native-root-toast";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { Ionicons } from "@expo/vector-icons";
+import { getRule } from "../../../apis/rules/getRule";
+import { getDefaultRoomId } from "../../../apis/getDefaultRoomId";
+import { getRoomMembers } from "../../../apis/room_members/getRoomMembers";
+import { getRoomMember } from "../../../apis/room_members/getRoomMember";
+import { getUserId } from "../../../../User/apis/getUserId";
 
 export const SkipButton = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const handlePress = () => {
-    setModalVisible(true);
+  const handlePress = async () => {
+    // TODO これは開く前に判定するべき。あとで移す。
+    const defaultRoomId = await getDefaultRoomId();
+    const userId = await getUserId();
+    if (!defaultRoomId) return;
+    const skipLimit = (await getRule(defaultRoomId)).rules?.skip_limit;
+    const skipCount = (await getRoomMember(defaultRoomId, userId)).skip_count;
+
+    if (skipLimit === skipCount) {
+      
+    } else {
+      setModalVisible(true);
+    }
   };
   return (
     <>
@@ -39,7 +55,7 @@ export const SkipButton = () => {
                   onPress={() => setModalVisible(!modalVisible)}
                 >
                   <Text className="text-white font-medium text-center">
-                    閉じる
+                    利用する
                   </Text>
                 </Pressable>
 

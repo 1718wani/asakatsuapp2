@@ -6,22 +6,40 @@ import { DisplayedSuccessNumber } from "../components/room-detail-components/Dis
 import { ParticipantPerformanceCard } from "../components/room-detail-components/ParticipantPerformanceCard";
 import { RoomRuleDetailCard } from "../components/room-detail-components/RoomRuleDetailCard";
 import { UserPerformanceCard } from "../components/room-detail-components/UserPerformanceCard";
-import useSWR from "swr";
 import { getDefaultRoomInfo } from "../apis/getDefaultRoomInfo";
 import { DefaultRoomInvitationUserCards } from "../components/room-detail-components/DefaultRoomInvitationUserCards";
+import { getUserInfo } from "../apis/getUserInfo";
+import { WaitingDisplay } from "../components/WaitingDisplay";
+import { StartRoomButton } from "../components/room-detail-components/buttons/StartRoomButton";
+import { useQuery } from "@tanstack/react-query";
 
 export const RoomDetailPageComponent = () => {
   const {
     data: defaultRoomInfo,
     isLoading: defaultRoomInfoLoading,
     error: defaultRoomInfoError,
-  } = useSWR(["defaultRoomInfo"], () => getDefaultRoomInfo());
-  console.log(defaultRoomInfo, "RoomDetailPageComponentでのdefaultRoomInfo");
+  } = useQuery({
+    queryKey: ["defaultRoomInfo"],
+    queryFn: () => getDefaultRoomInfo(),
+  });
+
+  const {
+    data: userInfo,
+    isLoading: userInfoLoading,
+    error: userInfoError,
+  } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: () => getUserInfo(),
+  });
 
   return (
     <>
       <View className=" fixed w-10/12 mx-auto my-2  ">
-        <DisplayedClock />
+        {defaultRoomInfo?.status === "ongoing" && <DisplayedClock />}
+        {defaultRoomInfo?.status === "inviting" &&
+          userInfo?.id === defaultRoomInfo.host_user && <StartRoomButton />}
+        {defaultRoomInfo?.status === "inviting" &&
+          userInfo?.id !== defaultRoomInfo.host_user && <WaitingDisplay />}
       </View>
 
       <ScrollView>
@@ -94,15 +112,15 @@ export const RoomDetailPageComponent = () => {
                         defaultRoomInfo.rules?.penalty_threshold ?? 5
                       }
                       skipLimit={defaultRoomInfo.rules?.skip_limit ?? 5}
-                      userName={member.profiles?.user_name}
+                      userName={member.profiles?.user_name ?? ""}
                       avatarUrl={member.profiles?.avatar_url}
                       status={member.status}
                     />
-                  ) :  (
+                  ) : (
                     // 非アクティブなメンバー用のコンポーネント
                     <DefaultRoomInvitationUserCards
                       avatarUrl={member.profiles?.avatar_url}
-                      userName={member.profiles?.user_name}
+                      userName={member.profiles?.user_name ?? ""}
                       status={member.status}
                     />
                   )}

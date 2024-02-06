@@ -7,11 +7,8 @@ import { AllMyRoomsComponent } from "../components/cardsComponent/RoomsListCompo
 export const RoomCardsListPageComponent = () => {
   return (
     <View className="flex-1 pt-4">
-      <ScrollView>
-        <View className="flex-1">
-          <AllMyRoomsComponent />
-        </View>
-      </ScrollView>
+      <AllMyRoomsComponent />
+
       <View className="absolute bottom-10 w-full items-center">
         <View className="h-1/3">
           <MakeRoomButton />

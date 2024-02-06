@@ -7,12 +7,7 @@ import { Session } from "@supabase/supabase-js";
 import { supabase } from "../../../libs/supabase";
 import { signOut } from "../functions/signOut";
 import { getUserId } from "../apis/getUserId";
-import { schedulePushNotification } from "../../AlarmClock/functions/schedulePushNotification";
 import { useRegisterForPushNotifications } from "../../AlarmClock/hooks/useRegisterForPushNotification";
-import {
-  sendPushNotifications,
-} from "../../AlarmClock/functions/sendPushNotifications";
-import { testapi } from "../../../utils/testapi";
 
 export default function EditUserPageComponent() {
   const { expoPushToken, notification } = useRegisterForPushNotifications();
@@ -25,31 +20,10 @@ export default function EditUserPageComponent() {
     <>
       <View className="items-center">
         <TouchableOpacity
-          onPress={async () =>
-            await schedulePushNotification(
-              { title: "テストでさーね", body: "テストのBody" },
-              new Date(new Date().getTime() + 20 * 1000)
-            )
-          }
-          className="bg-teal-600 w-1/3 items-center rounded-md mb-10"
-        >
-          <Text className="font-medium text-white h-4">通知を予定する。</Text>
-        </TouchableOpacity>
-      </View>
-      <View className="items-center">
-        <TouchableOpacity
           onPress={handleOnClickSignOut}
           className="bg-teal-600 w-1/3 items-center rounded-md"
         >
           <Text className="font-medium text-white h-4">ログアウト</Text>
-        </TouchableOpacity>
-      </View>
-      <View className="items-center">
-        <TouchableOpacity
-          onPress={async () => testapi()}
-          className="bg-teal-600 w-1/3 items-center rounded-md"
-        >
-          <Text className="font-medium text-white h-4">クロンテスト</Text>
         </TouchableOpacity>
       </View>
       <View

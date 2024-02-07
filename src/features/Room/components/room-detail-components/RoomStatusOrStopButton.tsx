@@ -9,9 +9,11 @@ import { useAtomValue } from "jotai";
 import { isDuringAwakeTimeAtom } from "../../../../states/isDuringAwakeTimeAtom";
 import { AwakeButton } from "./buttons/AwakeButton";
 import { SkipButton } from "./buttons/SkipButton";
+import { useWakeUpNotificationReceiver } from "../../../AlarmClock/hooks/useWakeUpNotificationReceiver";
 
 export const RoomStatusOrStopButton = () => {
   const isDuringAwakeTime = useAtomValue(isDuringAwakeTimeAtom);
+  useWakeUpNotificationReceiver();
 
   return (
     <>

@@ -9,9 +9,22 @@ import { useAtomValue } from "jotai";
 import { isDuringAwakeTimeAtom } from "../../../../states/isDuringAwakeTimeAtom";
 import { AwakeButton } from "./buttons/AwakeButton";
 import { SkipButton } from "./buttons/SkipButton";
+import { useWakeUpNotificationReceiver } from "../../../AlarmClock/hooks/useWakeUpNotificationReceiver";
+import { useQuery } from "@tanstack/react-query";
+import { getTodayMyAlarm } from "../../../AlarmClock/apis/getTodayMyAlarm";
 
 export const RoomStatusOrStopButton = () => {
+  const {
+    data: todayAlarmData,
+    isLoading: todayAlarmLoading,
+    error: todayAlarmError,
+  } = useQuery({
+    queryKey: ["todayAlarmData"],
+    queryFn: () => getTodayMyAlarm(),
+  });
+
   const isDuringAwakeTime = useAtomValue(isDuringAwakeTimeAtom);
+  useWakeUpNotificationReceiver();
 
   return (
     <>

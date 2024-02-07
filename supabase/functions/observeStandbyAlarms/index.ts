@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
       };
 
       const filteredAlarms = filterSameTime(standbyAlarmsData);
-      const filteredAlarmsId = filteredAlarms.map((alarm) => alarm.user_id);
+      const filteredAlarmsId = filteredAlarms.map((alarm) => alarm.id);
       console.log("フィルタリング結果", filteredAlarms);
       if (filteredAlarms.length === 0) {
         return new Response(

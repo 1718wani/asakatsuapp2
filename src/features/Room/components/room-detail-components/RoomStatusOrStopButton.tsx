@@ -21,15 +21,22 @@ export const RoomStatusOrStopButton = () => {
   } = useQuery({
     queryKey: ["todayAlarmData"],
     queryFn: () => getTodayMyAlarm(),
+    refetchInterval: 10000,
   });
 
-  const isDuringAwakeTime = useAtomValue(isDuringAwakeTimeAtom);
+  const isRingingStatusPresent = (alarms: typeof todayAlarmData) => {
+    // alarmsがnullまたはundefinedでないことを確認し、
+    // statusが"ringing"である要素が少なくとも一つ存在するかをチェック
+    return alarms?.some((alarm) => alarm.status === "ringing") ?? false;
+  };
+
   useWakeUpNotificationReceiver();
+  const hasRingingStatus = isRingingStatusPresent(todayAlarmData);
 
   return (
     <>
-      {isDuringAwakeTime && <AwakeButton />}
-      {!isDuringAwakeTime && <SkipButton />}
+      {hasRingingStatus && <AwakeButton />}
+      {!hasRingingStatus && <SkipButton />}
     </>
   );
 };

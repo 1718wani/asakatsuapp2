@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 export const useWakeUpNotificationReceiver = () => {
   const queryClient = useQueryClient();
   const notificationListener = useRef<Notifications.Subscription | null>(null);
-  console.log("okkeidesu");
 
   useEffect(() => {
     // 通知を受け取ったときのリスナー

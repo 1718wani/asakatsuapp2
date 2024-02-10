@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       alarms: {
@@ -217,6 +217,7 @@ export interface Database {
       room_members: {
         Row: {
           alarm_id: number | null;
+          consecutive_success_count: number | null;
           failure_count: number;
           penalty_count: number;
           room_id: number;
@@ -228,6 +229,7 @@ export interface Database {
         };
         Insert: {
           alarm_id?: number | null;
+          consecutive_success_count?: number | null;
           failure_count?: number;
           penalty_count?: number;
           room_id: number;
@@ -239,6 +241,7 @@ export interface Database {
         };
         Update: {
           alarm_id?: number | null;
+          consecutive_success_count?: number | null;
           failure_count?: number;
           penalty_count?: number;
           room_id?: number;
@@ -435,7 +438,7 @@ export interface Database {
       [_ in never]: never;
     };
   };
-}
+};
 
 export type Tables<
   PublicTableNameOrOptions extends

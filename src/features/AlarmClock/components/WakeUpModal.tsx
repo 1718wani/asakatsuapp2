@@ -7,6 +7,7 @@ import {
   Alert,
   Pressable,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -15,6 +16,9 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+import { useMutation } from "@tanstack/react-query";
+import { updateTodayMyAlarm } from "../apis/updateTodayMyAlarm";
+import { Database } from "../../../types/supabaseSchema";
 
 type props = {
   wakeUpModalVisible: boolean;
@@ -28,10 +32,21 @@ export const WakeUpModal = ({
   const [isAlreadyWakeUpButtonPushed, setIsAlreadyWakeUpButtonPushed] =
     useState(false);
 
+  const mutation = useMutation({
+    mutationFn: (status: Database["public"]["Enums"]["alarm_status_enum"]) => {
+      return updateTodayMyAlarm(status);
+    },
+    onSuccess: () => {
+      setIsAlreadyWakeUpButtonPushed(true);
+    },
+  });
+
   const handleWakeUpButton = () => {
     // まずアラームの状態をアップデートする。（その間activity indicatorを表示する）
+    mutation.mutate("success");
+    // TODO早起き成功のアクションログも追加したいが、サーバー側で実装したい
     // 完了したら、isAlreadywakeupbuttonpushedをtrueにする。
-  }  
+  };
 
   const rotation = useSharedValue(0);
 
@@ -67,7 +82,23 @@ export const WakeUpModal = ({
         <View style={styles.centeredView}>
           <View className="flex-1 items-center justify-center w-9/12 ">
             <View className="m-5 w-full h-1/3 bg-white rounded-2xl p-9 items-center shadow-sm shadow-gray-300">
-              {!isAlreadyWakeUpButtonPushed && (
+              {isAlreadyWakeUpButtonPushed ? (
+                <>
+                  <Text className="mb-6 text-center text-gray-600 text-xl font-bold">
+                    起床を記録しました !
+                  </Text>
+
+                  <Text className=" text-2xl font-medium text-gray-600">9回連続成功です</Text>
+                  <Pressable
+                    className=" rounded-lg px-3 py-2 bg-gray-400 shadow-md shadow-slate-300 mt-8 w-5/6"
+                    onPress={() => setWakeUpModalVisible(false)}
+                  >
+                    <Text className="text-white text-xl font-medium text-center">
+                      OK
+                    </Text>
+                  </Pressable>
+                </>
+              ) : (
                 <>
                   <Text className="mb-6 text-center text-gray-600 text-xl font-bold">
                     おはよう !
@@ -78,11 +109,15 @@ export const WakeUpModal = ({
                   </Animated.View>
                   <Pressable
                     className=" rounded-lg px-3 py-2 bg-red-300 shadow-md shadow-slate-300 mt-8 w-5/6"
-                    onPress={() => setWakeUpModalVisible(!wakeUpModalVisible)}
+                    onPress={handleWakeUpButton}
                   >
-                    <Text className="text-white text-xl font-medium text-center">
-                      おきたよ報告する
-                    </Text>
+                    {mutation.isPending ? (
+                      <ActivityIndicator size="large" />
+                    ) : (
+                      <Text className="text-white text-xl font-medium text-center">
+                        おきたよ報告する
+                      </Text>
+                    )}
                   </Pressable>
                 </>
               )}

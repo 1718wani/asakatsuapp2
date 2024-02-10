@@ -12,6 +12,7 @@ import { SkipButton } from "./buttons/SkipButton";
 import { useWakeUpNotificationReceiver } from "../../../AlarmClock/hooks/useWakeUpNotificationReceiver";
 import { useQuery } from "@tanstack/react-query";
 import { getTodayMyAlarm } from "../../../AlarmClock/apis/getTodayMyAlarm";
+import { WakeUpModal } from "../../../AlarmClock/components/WakeUpModal";
 
 export const RoomStatusOrStopButton = () => {
   const {
@@ -23,6 +24,8 @@ export const RoomStatusOrStopButton = () => {
     queryFn: () => getTodayMyAlarm(),
     refetchInterval: 10000,
   });
+
+  const [wakeUpModalVisible, setWakeUpModalVisible] = useState(true);
 
   const isRingingStatusPresent = (alarms: typeof todayAlarmData) => {
     // alarmsがnullまたはundefinedでないことを確認し、
@@ -37,6 +40,10 @@ export const RoomStatusOrStopButton = () => {
     <>
       {hasRingingStatus && <AwakeButton />}
       {!hasRingingStatus && <SkipButton />}
+      <WakeUpModal
+        wakeUpModalVisible={wakeUpModalVisible}
+        setWakeUpModalVisible={setWakeUpModalVisible}
+      />
     </>
   );
 };

@@ -33,6 +33,7 @@ export default function HomeLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [initialPageRouting, setInitialPageRouting] = useState(path.dashboard);
 
+  
   const { data: defaultRoomName } = useSWR(["defaultRoomName"], () =>
     getDefaultRoomName()
   );

@@ -21,6 +21,7 @@ import { updateTodayMyAlarm } from "../apis/updateTodayMyAlarm";
 import { Database } from "../../../types/supabaseSchema";
 import { getRoomMember } from "../../Room/apis/room_members/getRoomMember";
 import { getDefaultRoomInfo } from "../../Room/apis/getDefaultRoomInfo";
+import { useWiggleAnimation } from "../../../hooks/useWiggleAnimation";
 
 type props = {
   wakeUpModalVisible: boolean;
@@ -58,27 +59,8 @@ export const WakeUpModal = ({
     // TODO早起き成功のアクションログも追加したいが、サーバー側で実装したい
   };
 
-  const rotation = useSharedValue(0);
+  const animatedIconStyle = useWiggleAnimation();
 
-  // アニメーションスタイルを定義
-  const animatedIconStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotate: `${rotation.value}deg` }],
-    };
-  });
-
-  // コンポーネントがマウントされた時にアニメーションを開始
-  useEffect(() => {
-    const springConfig = {
-      damping: 1200,
-      stiffness: 10000,
-    };
-
-    rotation.value = withRepeat(withSpring(5, springConfig), -1, true);
-    setTimeout(() => {
-      rotation.value = withRepeat(withSpring(-5, springConfig), -1, true);
-    }, 10);
-  }, []);
   return (
     <View className="flex-1 items-center justify-center">
       <Modal

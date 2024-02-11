@@ -92,7 +92,10 @@ export const WakeUpModal = ({
                   </Text>
                   <Pressable
                     className=" rounded-lg px-3 py-2 bg-gray-400 shadow-md shadow-slate-300 mt-8 w-5/6"
-                    onPress={() => setWakeUpModalVisible(false)}
+                    onPress={() => {
+                      setWakeUpModalVisible(false);
+                      setIsAlreadyWakeUpButtonPushed(false);
+                    }}
                   >
                     <Text className="text-white text-xl font-medium text-center">
                       OK

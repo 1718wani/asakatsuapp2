@@ -25,7 +25,7 @@ export const RoomStatusOrStopButton = () => {
     refetchInterval: 10000,
   });
 
-  const [wakeUpModalVisible, setWakeUpModalVisible] = useState(true);
+  const [wakeUpModalVisible, setWakeUpModalVisible] = useState(false);
 
   const isRingingStatusPresent = (alarms: typeof todayAlarmData) => {
     // alarmsがnullまたはundefinedでないことを確認し、
@@ -38,12 +38,13 @@ export const RoomStatusOrStopButton = () => {
 
   return (
     <>
-      {hasRingingStatus && <AwakeButton />}
-      {!hasRingingStatus && <SkipButton />}
-      <WakeUpModal
-        wakeUpModalVisible={wakeUpModalVisible}
-        setWakeUpModalVisible={setWakeUpModalVisible}
-      />
+      {hasRingingStatus && (
+        <WakeUpModal
+          wakeUpModalVisible={wakeUpModalVisible}
+          setWakeUpModalVisible={setWakeUpModalVisible}
+        />
+      )}
+      <SkipButton />
     </>
   );
 };

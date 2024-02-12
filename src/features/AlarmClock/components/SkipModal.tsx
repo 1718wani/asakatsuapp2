@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  TouchableOpacity,
   Text,
   View,
   Modal,
@@ -9,23 +8,11 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSpring,
-} from "react-native-reanimated";
-import { Ionicons } from "@expo/vector-icons";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { updateTodayMyAlarm } from "../apis/updateTodayMyAlarm";
-import { Database } from "../../../types/supabaseSchema";
-import { getRoomMember } from "../../Room/apis/room_members/getRoomMember";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getDefaultRoomInfo } from "../../Room/apis/getDefaultRoomInfo";
-import { useWiggleAnimation } from "../../../hooks/useWiggleAnimation";
 import { updateRoomMemberStatus } from "../../Room/apis/updateRoomMemberStatus";
 import { getDefaultRoomId } from "../../Room/apis/getDefaultRoomId";
-import { getUserId } from "../../User/apis/getUserId";
-import { updateDecrementRoomMemberSkipCount } from "../apis/updateIncrementRoomMemberSkipCount";
 
 type props = {
   skipModalVisible: boolean;
@@ -49,10 +36,8 @@ export const SkipModal = ({
       if (!roomId) {
         throw Error();
       }
-      await updateTodayMyAlarm("pause");
       await updateRoomMemberStatus(roomId, "skipping");
-      // ちゃんと回数をアップデートするために以下を呼び出す。
-      await updateDecrementRoomMemberSkipCount();
+      // この時点でDatabase Hookで少なくなっている。
       await getDefaultRoomInfo();
     },
     onSuccess: () => {
@@ -66,7 +51,6 @@ export const SkipModal = ({
   const handleSkipButton = () => {
     // まずアラームの状態をpauseにアップデートする。（その間activity indicatorを表示する）
     mutation.mutate();
-    // TODO スキップ利用のアクションログも追加したいが、サーバー側で実装したい
   };
 
   return (

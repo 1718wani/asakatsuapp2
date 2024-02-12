@@ -2,7 +2,7 @@ import { supabase } from "../../../libs/supabase";
 import { getDefaultRoomId } from "../../Room/apis/getDefaultRoomId";
 import { getUserId } from "../../User/apis/getUserId";
 
-export const updateDecrementRoomMemberSkipCount = async (): Promise<void> => {
+export const updateIncrementRoomMemberSkipCount = async (): Promise<void> => {
   const userId = await getUserId();
   const roomId = await getDefaultRoomId();
   if (!userId || !roomId) {

@@ -56,7 +56,7 @@ export const WakeUpModal = ({
   const handleWakeUpButton = () => {
     // まずアラームの状態をアップデートする。（その間activity indicatorを表示する）
     mutation.mutate("success");
-    // TODO早起き成功のアクションログも追加したいが、サーバー側で実装したい
+    // 他のデータベース更新はSupabase側で実装されている。
   };
 
   const animatedIconStyle = useWiggleAnimation();

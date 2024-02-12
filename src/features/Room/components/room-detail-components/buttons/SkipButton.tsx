@@ -22,6 +22,8 @@ import { getDefaultRoomInfo } from "../../../apis/getDefaultRoomInfo";
 export const SkipButton = () => {
   const [skipModalVisible, setSkipModalVisible] = useState(false);
 
+  
+
   const {
     data: defaultRoomInfo,
     isLoading: defaultRoomInfoLoading,

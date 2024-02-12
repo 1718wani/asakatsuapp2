@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { supabase } from "../../../src/libs/supabase.ts";
 
 // 0時00分になったら毎回アクティブなルームメンバーだけアラームを作成する
 
@@ -94,6 +95,9 @@ Deno.serve(async (req) => {
         activeRoomMembersWithRulesinTodayActive
       );
 
+      // TODO このタイミングでSkippingなRoom Memberもactiveに設定するべき。と思っていたが、実は違うかもしれない。ただここでやりたい。つまりactiveじゃなくても、今日ルール上必要ならもう先にactiveに戻せばいいということだ。
+
+
       // すべてのアラームレコードの挿入処理を準備
       const insertPromises = activeRoomMembersWithRulesinTodayActive.map(
         (roomMember) => {
@@ -110,6 +114,7 @@ Deno.serve(async (req) => {
           return supabase.from("alarms").insert([alarmParams]);
         }
       );
+
 
       // すべての挿入処理を並行して実行
       Promise.all(insertPromises)
@@ -143,15 +148,3 @@ Deno.serve(async (req) => {
   }
   return new Response("OK");
 });
-
-/* To invoke locally:
-
-  1. Run `supabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
-  2. Make an HTTP request:
-
-  curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/cron-schedule' \
-    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0' \
-    --header 'Content-Type: application/json' \
-    --data '{"name":"Functions"}'
-
-*/

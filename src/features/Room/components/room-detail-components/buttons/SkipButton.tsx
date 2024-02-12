@@ -57,10 +57,10 @@ export const SkipButton = () => {
       />
       <TouchableOpacity
         onPress={handlePress}
-        disabled={isDisabled} // disabled 状態を設定
+        disabled={isDisabled}
         className={`rounded-full w-16 h-16  shadow-lg p-2 items-center ${
           isDisabled ? "bg-gray-400" : "bg-teal-300"
-        }`} // 条件に応じて背景色を変更
+        }`}
       >
         <Ionicons
           name="flag"

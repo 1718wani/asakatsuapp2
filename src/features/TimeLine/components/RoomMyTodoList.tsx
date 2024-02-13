@@ -5,13 +5,44 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import { useState } from "react";
-import { TodoIsOpenProps } from "../../types/TodoIsOpenProps";
+import { TodoIsOpenProps } from "../../Room/types/TodoIsOpenProps";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getUserActivityLogsWithProfiles } from "../apis/getTimeLineDatas";
+import { updateUserActivityLogChecked } from "../apis/updateUserActivityLogChecked";
+import Toast from "react-native-toast-message";
 
 export const RoomMyTodoList = (props: TodoIsOpenProps) => {
   const heightClass = props.todoIsOpen ? "h-2/5" : "";
   const router = useRouter();
+  const {
+    data: userActivityLogsWithProfilesData,
+    isLoading: userActivityLogsWithProfilesLoading,
+    error: userActivityLogsWithProfilesError,
+  } = useQuery({
+    queryKey: ["userActivityLogsWithProfiles"],
+    queryFn: () => getUserActivityLogsWithProfiles(),
+  });
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (logId: number) => {
+      return updateUserActivityLogChecked(logId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["userActivityLogsWithProfiles"],
+      });
+      Toast.show({
+        type: "success",
+        text1: "ペナルティを完了しました",
+      });
+    },
+  });
+
+
   return (
     <View className={`${heightClass}`}>
       <View className="flex flex-row justify-between bg-gray-600 mx-3 shadow-sm mt-2 rounded-md">

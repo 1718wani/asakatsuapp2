@@ -5,7 +5,7 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import { useState } from "react";
-import { TodoIsOpenProps } from "../../types/TodoIsOpenProps";
+import { TodoIsOpenProps } from "../../Room/types/TodoIsOpenProps";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 

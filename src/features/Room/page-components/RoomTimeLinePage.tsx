@@ -1,6 +1,6 @@
 import { View } from "react-native";
-import { RoomMyTodoList } from "../components/room-timeline-components/RoomMyTodoList";
-import { RoomTimelineList } from "../components/room-timeline-components/RoomTimelineList";
+import { RoomMyTodoList } from "../../TimeLine/components/RoomMyTodoList";
+import { RoomTimelineList } from "../../TimeLine/components/RoomTimelineList";
 import { useState } from "react";
 
 export const RoomTimelinePage = () => {

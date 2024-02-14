@@ -441,7 +441,8 @@ export type Database = {
         | "penalty_complete"
         | "wake_up_success"
         | "wake_up_failure"
-        | "skip_use";
+        | "skip_use"
+        | "penalty_imposed";
     };
     CompositeTypes: {
       [_ in never]: never;

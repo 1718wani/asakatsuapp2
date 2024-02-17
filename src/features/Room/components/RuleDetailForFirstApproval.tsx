@@ -28,7 +28,7 @@ export const RuleDetailForFirstApproval = (props: ruleProps) => {
     await mutate(["defaultRoomName"]);
     // ルーム情報を更新する。
     await mutate(["defaultRoomInfo"]);
-    router.push(path.dashboard);
+    router.replace(path.dashboard);
   };
   return (
     <>

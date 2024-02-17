@@ -17,7 +17,8 @@
     "ios": {
       "supportsTablet": true,
       "jsEngine": "hermes",
-      "bundleIdentifier": "com.yaikun.expoasakatsuapp"
+      "bundleIdentifier": "com.yaikun.expoasakatsuapp",
+      "buildNumber": "2"
     },
     "scheme": "com.supabase",
     "android": {
